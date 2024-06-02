@@ -1,30 +1,35 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:pet_care/provider/bottom_message_provider.dart';
 import 'package:pet_care/widgets/components/text_button.dart';
 import 'package:pet_care/widgets/components/textfield.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/theme/light_colors.dart';
-import '../../provider/volunteer_login_provider.dart';
+import '../../provider/owner_reg_provider.dart';
 
-class VolunteerLogin extends StatelessWidget {
+class OwnerReg extends StatelessWidget {
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _phoneNoController = TextEditingController();
+  final _ageController = TextEditingController();
+  final _occupationController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: LightColors.primaryDarkColor,
       body: Padding(
-        padding: const EdgeInsets.only(top: 12.0),
+        padding: const EdgeInsets.only(top: 3.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 10),
+            SizedBox(height: 2),
             Image.asset(
-              'assets/images/landing.jpg',
-              height: 150,
-              width: 100,
+              'assets/images/pe.png',
+              height: 100,
+              width: 90,
               // fit: BoxFit.cover,
             ),
             Expanded(
@@ -32,18 +37,28 @@ class VolunteerLogin extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: LightColors.scaffoldBackgroundColor,
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40),
+                    topLeft: Radius.circular(50),
+                    topRight: Radius.circular(50),
                   ),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(25.0),
-                  child: Consumer<VolunteerLoginProvider>(
+                  child: Consumer<OwnerRegProvider>(
                     builder: (context, provider, child) {
                       return SingleChildScrollView(
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
+                            MyTextField(
+                              hintText: 'Name',
+                              obsText: false,
+                              controller: _nameController,
+                              margin: EdgeInsets.only(bottom: 20),
+                              padding: EdgeInsets.zero,
+                              prefixIcon: Icon(Icons.person),
+                              textStyle: TextStyle(color: Colors.black),
+                              fillColor: Colors.white,
+                            ),
                             MyTextField(
                               hintText: 'Email',
                               obsText: false,
@@ -63,10 +78,10 @@ class VolunteerLogin extends StatelessWidget {
                               focusNode: FocusNode(),
                               prefixIcon: Icon(Icons.lock_outline),
                               suffixIcon: IconButton(
-                                icon: Icon(
-                                  provider.isPasswordVisible
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
+                                icon: ImageIcon(
+                                  AssetImage(provider.isPasswordVisible
+                                      ? 'assets/images/pet-icon.png'
+                                      : 'assets/images/pet-icon.png'),
                                 ),
                                 onPressed: () {
                                   provider.togglePasswordVisibility();
@@ -75,14 +90,55 @@ class VolunteerLogin extends StatelessWidget {
                               textStyle: TextStyle(color: Colors.black),
                               fillColor: Colors.white,
                             ),
+                            MyTextField(
+                              hintText: 'Phone No',
+                              obsText: false,
+                              controller: _phoneNoController,
+                              margin: EdgeInsets.only(bottom: 20),
+                              padding: EdgeInsets.zero,
+                              prefixIcon: Icon(Icons.phone),
+                              textStyle: TextStyle(color: Colors.black),
+                              fillColor: Colors.white,
+                            ),
+                            MyTextField(
+                              hintText: 'Age',
+                              obsText: false,
+                              controller: _ageController,
+                              margin: EdgeInsets.only(bottom: 20),
+                              padding: EdgeInsets.zero,
+                              prefixIcon: Icon(Icons.calendar_month),
+                              textStyle: TextStyle(color: Colors.black),
+                              fillColor: Colors.white,
+                            ),
+                            MyTextField(
+                              hintText: 'Occupation (Optional)',
+                              obsText: false,
+                              controller: _occupationController,
+                              margin: EdgeInsets.only(bottom: 20),
+                              padding: EdgeInsets.zero,
+                              prefixIcon:
+                                  Icon(Icons.miscellaneous_services_outlined),
+                              textStyle: TextStyle(color: Colors.black),
+                              fillColor: Colors.white,
+                            ),
                             SizedBox(height: 5),
                             CustomTextButton(
-                              onPressed: () {
+                              onPressed: () async {
+                                provider.setName(_nameController.text);
                                 provider.setEmail(_emailController.text);
                                 provider.setPassword(_passwordController.text);
-                                provider.login();
+                                provider.setPhoneNo(_phoneNoController.text);
+                                provider.setAge(_ageController.text);
+                                provider
+                                    .setOccupation(_occupationController.text);
+                                await provider.signUp();
+
+                                Provider.of<MessageProvider>(context,
+                                        listen: false)
+                                    .setMessage(
+                                        'Sign Up Successful! Please Login');
                               },
-                              text: 'Sign In',
+                              text: 'Sign Up',
                               backgroundColor: LightColors.primaryDarkColor,
                               textColor: LightColors.textColor,
                               fontSize: 15,
@@ -91,7 +147,7 @@ class VolunteerLogin extends StatelessWidget {
                             SizedBox(height: 12),
                             RichText(
                               text: TextSpan(
-                                  text: 'Don\'t have an account?',
+                                  text: 'Already have an account?',
                                   style: TextStyle(
                                     color: LightColors.textColor,
                                     fontSize: 16,
@@ -101,15 +157,15 @@ class VolunteerLogin extends StatelessWidget {
                                       text: ' ',
                                     ),
                                     TextSpan(
-                                        text: 'Sign Up',
+                                        text: 'Sign In',
                                         style: TextStyle(
                                           fontSize: 14,
-                                          color: Colors.grey,
+                                          //color:
                                         ),
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () {
-                                            Navigator.pushNamed(
-                                                context, '/volunteerReg');
+                                            provider
+                                                .navigateToOwnerLogin(context);
                                           })
                                   ]),
                             ),
