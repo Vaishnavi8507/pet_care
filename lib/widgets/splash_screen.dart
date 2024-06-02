@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:pet_care/widgets/register_screen.dart';
 import 'package:provider/provider.dart';
 
-import '../constants/theme/dark_colors.dart';
 import '../provider/splash_screen_provider.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -31,14 +30,14 @@ class _SplashScreenState extends State<SplashScreen>
     return ChangeNotifierProvider<SplashScreenProvider>(
       create: (_) => _splashScreenProvider,
       child: Scaffold(
-        backgroundColor: DarkColors.backgroundColor,
+        backgroundColor: Colors.white,
         body: Center(
           child: Consumer<SplashScreenProvider>(
             builder: (context, provider, child) {
               return FadeTransition(
                 opacity: provider.animation,
                 child: Image.asset(
-                  'assets/images/icon_heart.png',
+                  'assets/images/animals.png',
                   width: 900,
                   height: 900,
                 ),
