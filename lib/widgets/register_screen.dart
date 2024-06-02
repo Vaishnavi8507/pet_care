@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../constants/theme/dark_colors.dart';
+import '../constants/theme/light_colors.dart';
 import '../provider/register_provider.dart';
+import 'components/text_button.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -14,11 +15,6 @@ class _RegisterState extends State<Register>
   late AnimationController _animationController;
   late Animation<double> _animation;
   int animationCount = 0;
-
-  // Define button constants
-  static const Color buttonColor =
-      Colors.white70; // Define your desired button color
-  // static const double buttonSize = 120.0; // Define your desired button size
 
   @override
   void initState() {
@@ -59,115 +55,138 @@ class _RegisterState extends State<Register>
     return ChangeNotifierProvider<RegisterProvider>(
       create: (_) => RegisterProvider(),
       child: Scaffold(
-        backgroundColor: DarkColors.primaryDarkColor,
-        body: Padding(
-          padding: const EdgeInsets.only(top: 40.0, left: 16.0, right: 16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Text(
-                  'Welcome to the world of',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 28,
-                    color: Colors.black54,
-                  ),
-                ),
-              ),
-              SizedBox(height: 8), // Add some space between lines
-              Center(
-                child: Text(
-                  'Pets',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 28,
-                    color: Colors.black54,
-                  ),
-                ),
-              ),
-              SizedBox(height: 40), // Add space between text and image
-              Center(
-                child: Column(
-                  children: [
-                    // Add animation to the image
-                    ScaleTransition(
-                      scale: _animation,
-                      child: CircleAvatar(
-                        radius: 150,
-                        backgroundImage: AssetImage('assets/images/petty.jpeg'),
-                      ),
-                    ),
-                    SizedBox(height: 25),
-                    Text(
-                      textAlign: TextAlign.center,
-                      '"Until one has loved an animal, a part of ones soul remains unawakened"',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    SizedBox(height: 60), // Add space between image and buttons
-                    // Add text
-                    Text(
-                      'Continue as',
+        backgroundColor: LightColors.primaryDarkColor,
+        body: Stack(
+          children: [
+            Padding(
+              padding:
+                  const EdgeInsets.only(top: 40.0, left: 16.0, right: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Text(
+                      'Welcome to the world of',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                        fontSize: 28,
                         color: Colors.black54,
                       ),
                     ),
-                    SizedBox(height: 20), // Add space between text and buttons
-                    // Elevated buttons
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  ),
+                  SizedBox(height: 8), // Add some space between lines
+                  Center(
+                    child: Text(
+                      'Pets',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 28,
+                        color: Colors.black54,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 40), // Add space between text and image
+                  Center(
+                    child: Column(
                       children: [
-                        Consumer<RegisterProvider>(
-                          builder: (context, provider, child) {
-                            return ElevatedButton(
-                              onPressed: () {
-                                provider.navigateToOwner(context);
-                              },
-                              child: Text(
-                                'Owner',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  // fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                minimumSize: Size(110, 50),
-                                backgroundColor: buttonColor,
-                              ),
-                            );
-                          },
+                        ScaleTransition(
+                          scale: _animation,
+                          child: CircleAvatar(
+                            radius: 150,
+                            backgroundColor: LightColors.primaryDarkColor,
+                            backgroundImage:
+                                AssetImage('assets/images/petty.jpeg'),
+                          ),
                         ),
-                        Consumer<RegisterProvider>(
-                          builder: (context, provider, child) {
-                            return ElevatedButton(
-                              onPressed: () {
-                                provider.navigateToVolunteer(context);
+                        SizedBox(height: 25),
+                        Text(
+                          textAlign: TextAlign.center,
+                          '"Until one has loved an animal, a part of ones soul remains unawakened"',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(height: 25),
+                        Text(
+                          textAlign: TextAlign.center,
+                          "Continue as",
+                          style: TextStyle(
+                            color: LightColors.textColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
+                            height: 20), // Add space between text and buttons
+                        // Elevated buttons
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Consumer<RegisterProvider>(
+                              builder: (context, provider, child) {
+                                return CustomTextButton(
+                                  text: 'Owner',
+                                  onPressed: () {
+                                    provider.navigateToOwner(context);
+                                  },
+                                  backgroundColor: LightColors.backgroundColor,
+                                  textColor: LightColors.textColor,
+                                  fontSize: 15,
+                                  width: 110,
+                                );
                               },
-                              child: Text(
-                                'Volunteer',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                minimumSize: Size(110, 50),
-                                backgroundColor: buttonColor,
-                              ),
-                            );
-                          },
+                            ),
+                            Consumer<RegisterProvider>(
+                                builder: (context, provider, child) {
+                              return CustomTextButton(
+                                text: 'Volunteer',
+                                onPressed: () {
+                                  provider.navigateToVolunteer(context);
+                                },
+                                backgroundColor: LightColors.buttonColor,
+                                textColor: LightColors.textColor,
+                                fontSize: 15,
+                                width: 110,
+                              );
+                            })
+                          ],
                         ),
                       ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Positioned(
+              bottom: 22,
+              right: 25,
+              child: GestureDetector(
+                onTap: () {
+                  final provider =
+                      Provider.of<RegisterProvider>(context, listen: false);
+                  provider.navigateToPets(context);
+                },
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Explore',
+                      style: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward,
+                      color: Colors.black54,
                     ),
                   ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
