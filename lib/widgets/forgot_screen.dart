@@ -18,8 +18,8 @@ class ForgotPasswordScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 50),
-            Text(
+            const SizedBox(height: 50),
+            const Text(
               'Forgot Password',
               style: TextStyle(
                 color: LightColors.textColor,
@@ -49,7 +49,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                       CustomTextButton(
                         onPressed: () {
                           provider.setEmail(_emailController.text);
-                          provider.resetPassword();
+                          provider.resetPassword(context);
                         },
                         text: 'Reset Password',
                         backgroundColor: LightColors.primaryDarkColor,

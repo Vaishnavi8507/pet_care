@@ -57,7 +57,7 @@ class OwnerLogin extends StatelessWidget {
                             ),
                             MyTextField(
                               hintText: 'Password',
-                              obsText: !provider.isPasswordVisible,
+                              obsText: !provider.isOwnerPasswordVisible,
                               controller: _passwordController,
                               margin: EdgeInsets.only(bottom: 20),
                               padding: EdgeInsets.zero,
@@ -65,12 +65,12 @@ class OwnerLogin extends StatelessWidget {
                               prefixIcon: Icon(Icons.lock_outline),
                               suffixIcon: IconButton(
                                 icon: ImageIcon(
-                                  AssetImage(provider.isPasswordVisible
+                                  AssetImage(provider.isOwnerPasswordVisible
                                       ? 'assets/images/pet-icon.png'
                                       : 'assets/images/pet-icon.png'),
                                 ),
                                 onPressed: () {
-                                  provider.togglePasswordVisibility();
+                                  provider.toggleOwnerPasswordVisibility();
                                 },
                               ),
                               textStyle: TextStyle(color: Colors.black),
@@ -80,8 +80,7 @@ class OwnerLogin extends StatelessWidget {
                               alignment: Alignment.centerRight,
                               child: GestureDetector(
                                 onTap: () {
-                                  Navigator.pushNamed(
-                                      context, '/resetPassword');
+                                  provider.navigateToForgotPassword(context);
                                 },
                                 child: const Text(
                                   'Forgot Password?',
@@ -95,9 +94,10 @@ class OwnerLogin extends StatelessWidget {
                             SizedBox(height: 10),
                             CustomTextButton(
                               onPressed: () {
-                                provider.setEmail(_emailController.text);
-                                provider.setPassword(_passwordController.text);
-                                provider.login();
+                                provider.setOwnerEmail(_emailController.text);
+                                provider
+                                    .setOwnerPassword(_passwordController.text);
+                                provider.ownerLogin();
                               },
                               text: 'Sign In',
                               backgroundColor: LightColors.primaryDarkColor,

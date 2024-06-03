@@ -1,20 +1,18 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:pet_care/provider/volunteer_reg_provider.dart';
 import 'package:pet_care/widgets/components/text_button.dart';
 import 'package:pet_care/widgets/components/textfield.dart';
 import 'package:provider/provider.dart';
-
 import '../../constants/theme/light_colors.dart';
-import '../../provider/volunteer_reg_provider.dart';
-//import '../../provider/volunteer_reg_provider.dart';
 
 class VolunteerReg extends StatelessWidget {
-  final _nameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _phoneNoController = TextEditingController();
-  final _ageController = TextEditingController();
-  final _occupationController = TextEditingController();
+  final _volunteerNameController = TextEditingController();
+  final _volunteerEmailController = TextEditingController();
+  final _volunteerPasswordController = TextEditingController();
+  final _volunteerPhoneNoController = TextEditingController();
+  final _volunteerAgeController = TextEditingController();
+  final _volunteerOccupationController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +31,7 @@ class VolunteerReg extends StatelessWidget {
             ),
             Expanded(
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: LightColors.scaffoldBackgroundColor,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(40),
@@ -42,7 +40,7 @@ class VolunteerReg extends StatelessWidget {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(25.0),
-                  child: Consumer<VolunteerRegProvider>(
+                  child: Consumer<VolunteerRegistrationProvider>(
                     builder: (context, provider, child) {
                       return SingleChildScrollView(
                         child: Column(
@@ -51,7 +49,7 @@ class VolunteerReg extends StatelessWidget {
                             MyTextField(
                               hintText: 'Name',
                               obsText: false,
-                              controller: _nameController,
+                              controller: _volunteerNameController,
                               margin: EdgeInsets.only(bottom: 20),
                               padding: EdgeInsets.zero,
                               prefixIcon: Icon(Icons.person),
@@ -61,7 +59,7 @@ class VolunteerReg extends StatelessWidget {
                             MyTextField(
                               hintText: 'Email',
                               obsText: false,
-                              controller: _emailController,
+                              controller: _volunteerEmailController,
                               margin: EdgeInsets.only(bottom: 20),
                               padding: EdgeInsets.zero,
                               prefixIcon: Icon(Icons.email_outlined),
@@ -71,7 +69,7 @@ class VolunteerReg extends StatelessWidget {
                             MyTextField(
                               hintText: 'Password',
                               obsText: !provider.isPasswordVisible,
-                              controller: _passwordController,
+                              controller: _volunteerPasswordController,
                               margin: EdgeInsets.only(bottom: 20),
                               padding: EdgeInsets.zero,
                               focusNode: FocusNode(),
@@ -83,7 +81,7 @@ class VolunteerReg extends StatelessWidget {
                                       : Icons.visibility_off,
                                 ),
                                 onPressed: () {
-                                  provider.togglePasswordVisibility();
+                                  provider.toggleVolunteerPasswordVisibility();
                                 },
                               ),
                               textStyle: TextStyle(color: Colors.black),
@@ -92,7 +90,7 @@ class VolunteerReg extends StatelessWidget {
                             MyTextField(
                               hintText: 'Phone No',
                               obsText: false,
-                              controller: _phoneNoController,
+                              controller: _volunteerPhoneNoController,
                               margin: EdgeInsets.only(bottom: 20),
                               padding: EdgeInsets.zero,
                               prefixIcon: Icon(Icons.phone),
@@ -102,7 +100,7 @@ class VolunteerReg extends StatelessWidget {
                             MyTextField(
                               hintText: 'Age',
                               obsText: false,
-                              controller: _ageController,
+                              controller: _volunteerAgeController,
                               margin: EdgeInsets.only(bottom: 20),
                               padding: EdgeInsets.zero,
                               prefixIcon: Icon(Icons.calendar_today),
@@ -112,7 +110,7 @@ class VolunteerReg extends StatelessWidget {
                             MyTextField(
                               hintText: 'Occupation (Optional)',
                               obsText: false,
-                              controller: _occupationController,
+                              controller: _volunteerOccupationController,
                               margin: EdgeInsets.only(bottom: 20),
                               padding: EdgeInsets.zero,
                               prefixIcon: Icon(Icons.work_outline),
@@ -122,14 +120,13 @@ class VolunteerReg extends StatelessWidget {
                             SizedBox(height: 5),
                             CustomTextButton(
                               onPressed: () {
-                                provider.setName(_nameController.text);
-                                provider.setEmail(_emailController.text);
-                                provider.setPassword(_passwordController.text);
-                                provider.setPhoneNo(_phoneNoController.text);
-                                provider.setAge(_ageController.text);
-                                provider
-                                    .setOccupation(_occupationController.text);
-                                provider.signUp();
+                                provider.setVolunteerName(_volunteerNameController.text);
+                                provider.setVolunteerEmail(_volunteerEmailController.text);
+                                provider.setVolunteerPassword(_volunteerPasswordController.text);
+                                provider.setVolunteerPhoneNo(_volunteerPhoneNoController.text);
+                                provider.setVolunteerAge(_volunteerAgeController.text);
+                                provider.setVolunteerOccupation(_volunteerOccupationController.text);
+                                provider.volunteerSignUp();
                               },
                               text: 'Sign Up',
                               backgroundColor: LightColors.primaryDarkColor,
@@ -156,8 +153,7 @@ class VolunteerReg extends StatelessWidget {
                                         ),
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () {
-                                            provider.navigateToVolunteerLogin(
-                                                context);
+                                            provider.navigateToVolunteerLogin(context);
                                           })
                                   ]),
                             ),

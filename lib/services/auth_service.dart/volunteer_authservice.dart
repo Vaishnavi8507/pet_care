@@ -27,4 +27,9 @@ class AuthService {
       return null;
     }
   }
+
+   Future<void> forgotPassword(String email) async {
+
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+  }
 }

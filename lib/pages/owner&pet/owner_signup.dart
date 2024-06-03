@@ -1,6 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:pet_care/provider/bottom_message_provider.dart';
 import 'package:pet_care/widgets/components/text_button.dart';
 import 'package:pet_care/widgets/components/textfield.dart';
 import 'package:provider/provider.dart';
@@ -43,7 +42,7 @@ class OwnerReg extends StatelessWidget {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(25.0),
-                  child: Consumer<OwnerRegProvider>(
+                  child: Consumer<OwnerRegistrationProvider>(
                     builder: (context, provider, child) {
                       return SingleChildScrollView(
                         child: Column(
@@ -131,13 +130,9 @@ class OwnerReg extends StatelessWidget {
                                 provider.setAge(_ageController.text);
                                 provider
                                     .setOccupation(_occupationController.text);
-                                await provider.signUp();
+                                await provider.signUp(context);
 
-                                Provider.of<MessageProvider>(context,
-                                        listen: false)
-                                    .setMessage(
-                                        'Sign Up Successful! Please Login');
-                              },
+                                  },
                               text: 'Sign Up',
                               backgroundColor: LightColors.primaryDarkColor,
                               textColor: LightColors.textColor,

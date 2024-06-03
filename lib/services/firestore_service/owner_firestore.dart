@@ -10,17 +10,21 @@ class FireStoreService {
     required String phoneNo,
     required String age,
     required String occupation,
+    required String role,
   }) async {
     try {
       await _firestore
           .collection('users')
           .doc('pet_owners')
-          .collection('pet_owners').doc(userId)
+          .collection('pet_owners')
+          .doc(userId)
           .set({
         'name': name,
         'email': email,
+        'phoneNo': phoneNo,
         'age': age,
-        'occupation': occupation
+        'occupation': occupation,
+        'role': role,
       });
     } catch (e) {
       print("Error saving User Details $e");

@@ -66,7 +66,7 @@ class _RegisterState extends State<Register>
                 children: [
                   Center(
                     child: Text(
-                      'Welcome to the world of',
+                      'Hello !',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 28,
@@ -77,7 +77,7 @@ class _RegisterState extends State<Register>
                   SizedBox(height: 8), // Add some space between lines
                   Center(
                     child: Text(
-                      'Pets',
+                      'Good Hoomans ',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 28,
@@ -127,13 +127,20 @@ class _RegisterState extends State<Register>
                               builder: (context, provider, child) {
                                 return CustomTextButton(
                                   text: 'Owner',
+                                  
                                   onPressed: () {
                                     provider.navigateToOwner(context);
                                   },
                                   backgroundColor: LightColors.backgroundColor,
                                   textColor: LightColors.textColor,
                                   fontSize: 15,
-                                  width: 110,
+                                  width: 160,
+                                  textStyle: TextStyle(
+                                    fontSize: 28, // Customize the font size
+                                    fontWeight: FontWeight.bold, // Customize the font weight
+                                    letterSpacing: 1.2, // Customize the letter spacing
+                                     // Customize the font style
+                                  ),
                                 );
                               },
                             ),
@@ -147,7 +154,7 @@ class _RegisterState extends State<Register>
                                 backgroundColor: LightColors.buttonColor,
                                 textColor: LightColors.textColor,
                                 fontSize: 15,
-                                width: 110,
+                                width: 160,
                               );
                             })
                           ],

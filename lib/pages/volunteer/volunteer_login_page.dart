@@ -8,8 +8,8 @@ import '../../constants/theme/light_colors.dart';
 import '../../provider/volunteer_login_provider.dart';
 
 class VolunteerLogin extends StatelessWidget {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final _volunteerEmailController = TextEditingController();
+  final _volunteerPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,6 @@ class VolunteerLogin extends StatelessWidget {
               'assets/images/landing.jpg',
               height: 150,
               width: 100,
-              // fit: BoxFit.cover,
             ),
             Expanded(
               child: Container(
@@ -47,7 +46,7 @@ class VolunteerLogin extends StatelessWidget {
                             MyTextField(
                               hintText: 'Email',
                               obsText: false,
-                              controller: _emailController,
+                              controller: _volunteerEmailController,
                               margin: EdgeInsets.only(bottom: 20),
                               padding: EdgeInsets.zero,
                               prefixIcon: Icon(Icons.email_outlined),
@@ -56,20 +55,20 @@ class VolunteerLogin extends StatelessWidget {
                             ),
                             MyTextField(
                               hintText: 'Password',
-                              obsText: !provider.isPasswordVisible,
-                              controller: _passwordController,
+                              obsText: !provider.isVolunteerPasswordVisible,
+                              controller: _volunteerPasswordController,
                               margin: EdgeInsets.only(bottom: 20),
                               padding: EdgeInsets.zero,
                               focusNode: FocusNode(),
                               prefixIcon: Icon(Icons.lock_outline),
                               suffixIcon: IconButton(
                                 icon: Icon(
-                                  provider.isPasswordVisible
+                                  provider.isVolunteerPasswordVisible
                                       ? Icons.visibility
                                       : Icons.visibility_off,
                                 ),
                                 onPressed: () {
-                                  provider.togglePasswordVisibility();
+                                  provider.toggleVolunteerPasswordVisibility();
                                 },
                               ),
                               textStyle: TextStyle(color: Colors.black),
@@ -78,9 +77,9 @@ class VolunteerLogin extends StatelessWidget {
                             SizedBox(height: 5),
                             CustomTextButton(
                               onPressed: () {
-                                provider.setEmail(_emailController.text);
-                                provider.setPassword(_passwordController.text);
-                                provider.login();
+                                provider.setVolunteerEmail(_volunteerEmailController.text);
+                                provider.setVolunteerPassword(_volunteerPasswordController.text);
+                                provider.volunteerLogin();
                               },
                               text: 'Sign In',
                               backgroundColor: LightColors.primaryDarkColor,

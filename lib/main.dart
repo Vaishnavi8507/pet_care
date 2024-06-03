@@ -8,7 +8,7 @@ import 'package:pet_care/pages/owner&pet/pet_register.dart';
 import 'package:pet_care/pages/pets_page/pets.dart';
 import 'package:pet_care/pages/volunteer/volunteer_login_page.dart';
 import 'package:pet_care/pages/volunteer/volunteer_reg.dart';
-import 'package:pet_care/provider/bottom_message_provider.dart';
+import 'package:pet_care/provider/forgot_password_provider.dart';
 import 'package:pet_care/provider/owner_login_provider.dart';
 import 'package:pet_care/provider/owner_reg_provider.dart';
 import 'package:pet_care/provider/pet_reg_provider.dart';
@@ -16,6 +16,7 @@ import 'package:pet_care/provider/pets_provider.dart';
 import 'package:pet_care/provider/register_provider.dart';
 import 'package:pet_care/provider/volunteer_login_provider.dart';
 import 'package:pet_care/provider/volunteer_reg_provider.dart';
+import 'package:pet_care/widgets/forgot_screen.dart';
 import 'package:pet_care/widgets/splash_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -26,15 +27,17 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => OwnerRegProvider()),
+        ChangeNotifierProvider(
+            create: (context) => OwnerRegistrationProvider()),
         ChangeNotifierProvider(create: (context) => OwnerLoginProvider()),
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
         ChangeNotifierProvider(create: (context) => RegisterProvider()),
         ChangeNotifierProvider(create: (context) => PetsProvider()),
         ChangeNotifierProvider(create: (context) => PetRegistrationProvider()),
-        ChangeNotifierProvider(create: (context) => VolunteerRegProvider()),
+        ChangeNotifierProvider(
+            create: (context) => VolunteerRegistrationProvider()),
         ChangeNotifierProvider(create: (context) => VolunteerLoginProvider()),
-        ChangeNotifierProvider(create: (context) => MessageProvider(),)
+        ChangeNotifierProvider(create: (context) => ForgotPasswordProvider())
       ],
       child: MyApp(),
     ),
@@ -51,16 +54,14 @@ class MyApp extends StatelessWidget {
       theme: Provider.of<ThemeProvider>(context).themeData,
       initialRoute: '/',
       routes: {
-        '/': (context) => ChangeNotifierProvider(
-          create: (context) => MessageProvider(), // Provide MessageProvider here
-          child: SplashScreen(),
-        ),
+        '/': (context) => SplashScreen(),
         '/ownerReg': (context) => OwnerReg(),
         '/ownerLogin': (context) => OwnerLogin(),
         '/pets': (context) => Pets(),
         '/petRegister': (context) => PetRegistration(),
         '/volunteerRegister': (context) => VolunteerReg(),
         '/volunteerLogin': (context) => VolunteerLogin(),
+        '/forgotPassword': (context) => ForgotPasswordScreen()
       },
     );
   }

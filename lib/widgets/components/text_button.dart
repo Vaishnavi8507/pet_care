@@ -29,7 +29,7 @@ class CustomTextButton extends StatelessWidget {
     this.borderRadius,
     this.borderSide,
     this.textStyle,
-    this.width, // Include width in the constructor
+    this.width,  
   }) : super(key: key);
 
   @override
@@ -44,7 +44,7 @@ class CustomTextButton extends StatelessWidget {
           padding: padding,
           shape: RoundedRectangleBorder(
             borderRadius: borderRadius ?? BorderRadius.circular(15),
-            side: borderSide ?? BorderSide.none,
+           // side: borderSide ?? BorderSide(color: Colors.black), // Default black border
           ),
         ),
         child: Text(

@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:pet_care/provider/bottom_message_provider.dart';
+import 'package:pet_care/constants/snackbar.dart';
 import 'package:pet_care/services/auth_service.dart/owner_authservice.dart';
 import 'package:pet_care/services/firestore_service/owner_firestore.dart';
 import 'package:provider/provider.dart';
 
-class OwnerRegProvider extends ChangeNotifier {
+class OwnerRegistrationProvider extends ChangeNotifier {
   String _name = '';
   String _email = '';
   String _password = '';
@@ -14,8 +14,9 @@ class OwnerRegProvider extends ChangeNotifier {
   String _occupation = '';
   bool _isPasswordVisible = false;
 
-  final AuthService _authService = AuthService();
+  final String _role = 'owner';
 
+  final AuthService _authService = AuthService();
   final FireStoreService _fireStoreService = FireStoreService();
 
   String get name => _name;
@@ -61,42 +62,45 @@ class OwnerRegProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> signUp( ) async {
+  Future<void> signUp(BuildContext context) async {
     if (_name.isEmpty ||
         _email.isEmpty ||
         _password.isEmpty ||
         _phoneNo.isEmpty ||
         _age.isEmpty) {
- 
+      showSnackBar(context, 'All fields are required!');
       print("All fields are required!");
-       
       return;
     }
 
     if (_password.length < 8) {
-      print("Password should be 8 characters");
+      showSnackBar(context, 'Password should be atleast 8 characters!');
+      print("Password should be at least 8 characters");
       return;
     }
 
     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     if (!emailRegex.hasMatch(_email)) {
-       print("Email should be in correct format! ");
-       return;
+      showSnackBar(context, "Email should be in correct format!");
+      print("Email should be in correct format!");
+      return;
     }
 
     User? user = await _authService.signUp(_email, _password);
 
     if (user != null) {
       await _fireStoreService.saveUserDetails(
-          userId: user.uid,
-          name: name,
-          email: email,
-          phoneNo: phoneNo,
-          age: age,
-          occupation: occupation);
-      print('User signed up and details saved');
-
-       }
+        userId: user.uid,
+        name: name,
+        email: email,
+        phoneNo: phoneNo,
+        age: age,
+        occupation: occupation,
+        role: _role,
+      );
+      showSnackBar(context, "Owner signed up and details saved");
+      print('Owner signed up and details saved');
+    }
   }
 
   void navigateToOwnerLogin(BuildContext context) {

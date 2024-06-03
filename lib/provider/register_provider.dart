@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pet_care/pages/pets_page/pets.dart';
+import 'package:pet_care/pages/volunteer/volunteer_reg.dart';
 
 import '../pages/owner&pet/owner_signup.dart';
 
@@ -14,7 +15,7 @@ class RegisterProvider with ChangeNotifier {
   void navigateToVolunteer(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => OwnerReg()),
+      MaterialPageRoute(builder: (context) => VolunteerReg()),
     );
   }
 
