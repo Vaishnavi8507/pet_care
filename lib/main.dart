@@ -8,6 +8,7 @@ import 'package:pet_care/pages/owner&pet/pet_register.dart';
 import 'package:pet_care/pages/pets_page/pets.dart';
 import 'package:pet_care/pages/volunteer/volunteer_login_page.dart';
 import 'package:pet_care/pages/volunteer/volunteer_reg.dart';
+import 'package:pet_care/pages/volunteer/volunter_reg2.dart';
 import 'package:pet_care/provider/forgot_password_provider.dart';
 import 'package:pet_care/provider/owner_login_provider.dart';
 import 'package:pet_care/provider/owner_reg_provider.dart';
@@ -61,7 +62,8 @@ class MyApp extends StatelessWidget {
         '/petRegister': (context) => PetRegistration(),
         '/volunteerRegister': (context) => VolunteerReg(),
         '/volunteerLogin': (context) => VolunteerLogin(),
-        '/forgotPassword': (context) => ForgotPasswordScreen()
+        '/forgotPassword': (context) => ForgotPasswordScreen(),
+        '/volunteerRegister2': (context) => VolunteerRegPage2()
       },
     );
   }

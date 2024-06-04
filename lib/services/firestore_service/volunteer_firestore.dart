@@ -4,12 +4,21 @@ class FireStoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<void> saveVolunteerDetails({
-    required String userId,
+   required String userId,
     required String name,
     required String email,
     required String phoneNo,
     required String age,
     required String occupation,
+    required String aboutMe,
+    required bool prefersCat,
+    required bool prefersDog,
+    required bool prefersBird,
+    required bool prefersRabbit,
+    required bool prefersOthers,
+    required bool providesHomeVisits,
+    required bool providesDogWalking,
+    required bool providesHouseSitting,
     required String role,
 
   }) async {
@@ -21,10 +30,21 @@ class FireStoreService {
           .doc(userId)
           .set({
         'name': name,
-        'email': email,
-        'age': age,
-        'occupation': occupation,
-        'role': role
+      'email': email,
+      'phoneNo': phoneNo,
+      'age': age,
+      'occupation': occupation,
+      'aboutMe': aboutMe,
+      'prefersCat': prefersCat,
+      'prefersDog': prefersDog,
+      'prefersBird': prefersBird,
+      'prefersRabbit': prefersRabbit,
+      'prefersOthers': prefersOthers,
+      'providesHomeVisits': providesHomeVisits,
+      'providesDogWalking': providesDogWalking,
+      'providesHouseSitting': providesHouseSitting,
+      'role': role,
+
       });
     } catch (e) {
       print("Error saving User Details $e");
