@@ -5,11 +5,11 @@ import 'package:pet_care/widgets/components/textfield.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/theme/light_colors.dart';
-import '../../provider/volunteer_login_provider.dart';
+import '../../provider/owner_login_provider.dart';
 
-class VolunteerLogin extends StatelessWidget {
-  final _volunteerEmailController = TextEditingController();
-  final _volunteerPasswordController = TextEditingController();
+class OwnerLogin extends StatelessWidget {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +21,16 @@ class VolunteerLogin extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SizedBox(height: 10),
+            // Image placed just above the container
             Image.asset(
-              'assets/images/landing.jpg',
+              'assets/images/img.png',
               height: 150,
               width: 100,
+              // fit: BoxFit.cover,
             ),
             Expanded(
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: LightColors.scaffoldBackgroundColor,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(40),
@@ -37,7 +39,7 @@ class VolunteerLogin extends StatelessWidget {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(25.0),
-                  child: Consumer<VolunteerLoginProvider>(
+                  child: Consumer<OwnerLoginProvider>(
                     builder: (context, provider, child) {
                       return SingleChildScrollView(
                         child: Column(
@@ -46,7 +48,7 @@ class VolunteerLogin extends StatelessWidget {
                             MyTextField(
                               hintText: 'Email',
                               obsText: false,
-                              controller: _volunteerEmailController,
+                              controller: _emailController,
                               margin: EdgeInsets.only(bottom: 20),
                               padding: EdgeInsets.zero,
                               prefixIcon: Icon(Icons.email_outlined),
@@ -55,31 +57,47 @@ class VolunteerLogin extends StatelessWidget {
                             ),
                             MyTextField(
                               hintText: 'Password',
-                              obsText: !provider.isVolunteerPasswordVisible,
-                              controller: _volunteerPasswordController,
+                              obsText: !provider.isOwnerPasswordVisible,
+                              controller: _passwordController,
                               margin: EdgeInsets.only(bottom: 20),
                               padding: EdgeInsets.zero,
                               focusNode: FocusNode(),
                               prefixIcon: Icon(Icons.lock_outline),
                               suffixIcon: IconButton(
-                                icon: Icon(
-                                  provider.isVolunteerPasswordVisible
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
+                                icon: ImageIcon(
+                                  AssetImage(provider.isOwnerPasswordVisible
+                                      ? 'assets/images/pet-icon.png'
+                                      : 'assets/images/pet-icon.png'),
                                 ),
                                 onPressed: () {
-                                  provider.toggleVolunteerPasswordVisibility();
+                                  provider.toggleOwnerPasswordVisibility();
                                 },
                               ),
                               textStyle: TextStyle(color: Colors.black),
                               fillColor: Colors.white,
                             ),
-                            SizedBox(height: 5),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: GestureDetector(
+                                onTap: () {
+                                  provider.navigateToForgotPassword(context);
+                                },
+                                child: const Text(
+                                  'Forgot Password?',
+                                  style: TextStyle(
+                                    color: LightColors.textColor,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 10),
                             CustomTextButton(
                               onPressed: () {
-                                provider.setVolunteerEmail(_volunteerEmailController.text);
-                                provider.setVolunteerPassword(_volunteerPasswordController.text);
-                                provider.volunteerLogin();
+                                provider.setOwnerEmail(_emailController.text);
+                                provider
+                                    .setOwnerPassword(_passwordController.text);
+                                provider.ownerLogin();
                               },
                               text: 'Sign In',
                               backgroundColor: LightColors.primaryDarkColor,
@@ -90,27 +108,29 @@ class VolunteerLogin extends StatelessWidget {
                             SizedBox(height: 12),
                             RichText(
                               text: TextSpan(
-                                  text: 'Don\'t have an account?',
-                                  style: TextStyle(
-                                    color: LightColors.textColor,
-                                    fontSize: 16,
+                                text: 'Don\'t have an account?',
+                                style: const TextStyle(
+                                  color: LightColors.textColor,
+                                  fontSize: 16,
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: ' ',
                                   ),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: ' ',
+                                  TextSpan(
+                                    text: 'Sign Up',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: LightColors.textColor,
                                     ),
-                                    TextSpan(
-                                        text: 'Sign Up',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.grey,
-                                        ),
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = () {
-                                            Navigator.pushNamed(
-                                                context, '/volunteerReg');
-                                          })
-                                  ]),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        Navigator.pushNamed(
+                                            context, '/ownerReg');
+                                      },
+                                  )
+                                ],
+                              ),
                             ),
                           ],
                         ),

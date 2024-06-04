@@ -1,34 +1,37 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:pet_care/provider/volunteer_reg_provider.dart';
 import 'package:pet_care/widgets/components/text_button.dart';
 import 'package:pet_care/widgets/components/textfield.dart';
 import 'package:provider/provider.dart';
-
 import '../../constants/theme/light_colors.dart';
-import '../../provider/volunteer_login_provider.dart';
 
-class VolunteerLogin extends StatelessWidget {
+class VolunteerReg extends StatelessWidget {
+  final _volunteerNameController = TextEditingController();
   final _volunteerEmailController = TextEditingController();
   final _volunteerPasswordController = TextEditingController();
+  final _volunteerPhoneNoController = TextEditingController();
+  final _volunteerAgeController = TextEditingController();
+  final _volunteerOccupationController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: LightColors.primaryDarkColor,
       body: Padding(
-        padding: const EdgeInsets.only(top: 12.0),
+        padding: const EdgeInsets.only(top: 3.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 10),
+            SizedBox(height: 2),
             Image.asset(
-              'assets/images/landing.jpg',
-              height: 150,
-              width: 100,
+              'assets/images/landing-2.jpg',
+              height: 100,
+              width: 90,
             ),
             Expanded(
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: LightColors.scaffoldBackgroundColor,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(40),
@@ -37,12 +40,22 @@ class VolunteerLogin extends StatelessWidget {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(25.0),
-                  child: Consumer<VolunteerLoginProvider>(
+                  child: Consumer<VolunteerRegistrationProvider>(
                     builder: (context, provider, child) {
                       return SingleChildScrollView(
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
+                            MyTextField(
+                              hintText: 'Name',
+                              obsText: false,
+                              controller: _volunteerNameController,
+                              margin: EdgeInsets.only(bottom: 20),
+                              padding: EdgeInsets.zero,
+                              prefixIcon: Icon(Icons.person),
+                              textStyle: TextStyle(color: Colors.black),
+                              fillColor: Colors.white,
+                            ),
                             MyTextField(
                               hintText: 'Email',
                               obsText: false,
@@ -55,7 +68,7 @@ class VolunteerLogin extends StatelessWidget {
                             ),
                             MyTextField(
                               hintText: 'Password',
-                              obsText: !provider.isVolunteerPasswordVisible,
+                              obsText: !provider.isPasswordVisible,
                               controller: _volunteerPasswordController,
                               margin: EdgeInsets.only(bottom: 20),
                               padding: EdgeInsets.zero,
@@ -63,7 +76,7 @@ class VolunteerLogin extends StatelessWidget {
                               prefixIcon: Icon(Icons.lock_outline),
                               suffixIcon: IconButton(
                                 icon: Icon(
-                                  provider.isVolunteerPasswordVisible
+                                  provider.isPasswordVisible
                                       ? Icons.visibility
                                       : Icons.visibility_off,
                                 ),
@@ -74,14 +87,48 @@ class VolunteerLogin extends StatelessWidget {
                               textStyle: TextStyle(color: Colors.black),
                               fillColor: Colors.white,
                             ),
+                            MyTextField(
+                              hintText: 'Phone No',
+                              obsText: false,
+                              controller: _volunteerPhoneNoController,
+                              margin: EdgeInsets.only(bottom: 20),
+                              padding: EdgeInsets.zero,
+                              prefixIcon: Icon(Icons.phone),
+                              textStyle: TextStyle(color: Colors.black),
+                              fillColor: Colors.white,
+                            ),
+                            MyTextField(
+                              hintText: 'Age',
+                              obsText: false,
+                              controller: _volunteerAgeController,
+                              margin: EdgeInsets.only(bottom: 20),
+                              padding: EdgeInsets.zero,
+                              prefixIcon: Icon(Icons.calendar_today),
+                              textStyle: TextStyle(color: Colors.black),
+                              fillColor: Colors.white,
+                            ),
+                            MyTextField(
+                              hintText: 'Occupation (Optional)',
+                              obsText: false,
+                              controller: _volunteerOccupationController,
+                              margin: EdgeInsets.only(bottom: 20),
+                              padding: EdgeInsets.zero,
+                              prefixIcon: Icon(Icons.work_outline),
+                              textStyle: TextStyle(color: Colors.black),
+                              fillColor: Colors.white,
+                            ),
                             SizedBox(height: 5),
                             CustomTextButton(
                               onPressed: () {
+                                provider.setVolunteerName(_volunteerNameController.text);
                                 provider.setVolunteerEmail(_volunteerEmailController.text);
                                 provider.setVolunteerPassword(_volunteerPasswordController.text);
-                                provider.volunteerLogin();
+                                provider.setVolunteerPhoneNo(_volunteerPhoneNoController.text);
+                                provider.setVolunteerAge(_volunteerAgeController.text);
+                                provider.setVolunteerOccupation(_volunteerOccupationController.text);
+                                provider.volunteerSignUp();
                               },
-                              text: 'Sign In',
+                              text: 'Sign Up',
                               backgroundColor: LightColors.primaryDarkColor,
                               textColor: LightColors.textColor,
                               fontSize: 15,
@@ -90,7 +137,7 @@ class VolunteerLogin extends StatelessWidget {
                             SizedBox(height: 12),
                             RichText(
                               text: TextSpan(
-                                  text: 'Don\'t have an account?',
+                                  text: 'Already have an account?',
                                   style: TextStyle(
                                     color: LightColors.textColor,
                                     fontSize: 16,
@@ -100,15 +147,13 @@ class VolunteerLogin extends StatelessWidget {
                                       text: ' ',
                                     ),
                                     TextSpan(
-                                        text: 'Sign Up',
+                                        text: 'Sign In',
                                         style: TextStyle(
                                           fontSize: 14,
-                                          color: Colors.grey,
                                         ),
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () {
-                                            Navigator.pushNamed(
-                                                context, '/volunteerReg');
+                                            provider.navigateToVolunteerLogin(context);
                                           })
                                   ]),
                             ),
