@@ -149,7 +149,7 @@ class VolunteerRegPage2 extends StatelessWidget {
                             Card(
                               color:LightColors.backgroundColor,
                               child: SwitchListTile(
-                              title: Text('Dog Walking'),
+                              title: Text('Pet Walking'),
                               value: provider.providesDogWalking,
                               onChanged: (bool value) {
                                 provider.setProvidesDogWalking(value);
@@ -170,7 +170,7 @@ class VolunteerRegPage2 extends StatelessWidget {
                             CustomTextButton(
                               onPressed: () {
                                 provider.setVolunteerAboutMe(_volunteerAboutMeController.text);
-                                provider.volunteerSignUp();
+                                provider.volunteerSignUp(context);
                               },
                               text: 'Sign Up',
                               backgroundColor: LightColors.primaryDarkColor,

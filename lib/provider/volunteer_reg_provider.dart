@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pet_care/constants/snackbar.dart';
 import 'package:pet_care/services/auth_service.dart/owner_authservice.dart';
 import 'package:pet_care/services/firestore_service/volunteer_firestore.dart';
-
+import 'package:pet_care/shared_pref_service.dart';
+ 
 class VolunteerRegistrationProvider extends ChangeNotifier {
   String _volunteerName = '';
   String _volunteerEmail = '';
@@ -21,10 +23,14 @@ class VolunteerRegistrationProvider extends ChangeNotifier {
   bool _providesHouseSitting = false;
   bool _isVolunteerPasswordVisible = false;
 
+  bool _isVolunteerLoggedIn = false;
+
   final String _volunteerRole = 'volunteer';
   final AuthService _authService = AuthService();
   final FireStoreService _fireStoreService = FireStoreService();
+  final SharedPreferencesService _prefsService = SharedPreferencesService();
 
+  bool get isVolunteerLoggedIn => _isVolunteerLoggedIn;
   String get volunteerName => _volunteerName;
   String get volunteerEmail => _volunteerEmail;
   String get volunteerPassword => _volunteerPassword;
@@ -122,23 +128,26 @@ class VolunteerRegistrationProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> volunteerSignUp() async {
+  Future<void> volunteerSignUp(BuildContext context) async {
     if (_volunteerName.isEmpty ||
         _volunteerEmail.isEmpty ||
         _volunteerPassword.isEmpty ||
         _volunteerPhoneNo.isEmpty ||
         _volunteerAge.isEmpty) {
+      showSnackBar(context, "All fields are required!");
       print("All fields are required!");
       return;
     }
 
     if (_volunteerPassword.length < 8) {
+      showSnackBar(context, "Password should be at least 8 characters");
       print("Password should be at least 8 characters");
       return;
     }
 
     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     if (!emailRegex.hasMatch(_volunteerEmail)) {
+      showSnackBar(context, "Email should be in correct format");
       print("Email should be in correct format!");
       return;
     }
@@ -164,8 +173,35 @@ class VolunteerRegistrationProvider extends ChangeNotifier {
         providesHouseSitting: providesHouseSitting,
         role: _volunteerRole,
       );
+
+      await _prefsService.setBool('isVolunteerLoggedIn', true);
+      _isVolunteerLoggedIn = true;
+      notifyListeners();
+
+      navigateToVolunteerDashboard(context);
+      showSnackBar(context, "Volunteer Signup Successful");
       print('Volunteer signed up and details saved');
+    } else {
+      print("Sign Up Failed!");
+      showSnackBar(context, "SignUp Failed!");
     }
+  }
+
+  Future<void> checkVolunteerLoginStatus() async {
+    _isVolunteerLoggedIn = _prefsService.getBool('isVolunteerLoggedIn');
+    notifyListeners();
+  }
+
+  Future<void> logout(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    await _prefsService.setBool('isVolunteerLoggedIn', false);
+    _isVolunteerLoggedIn = false;
+    notifyListeners();
+    navigateToSplashScreen(context);
+  }
+
+  void navigateToSplashScreen(BuildContext context) {
+    Navigator.pushNamed(context, '/');
   }
 
   void navigateToVolunteerLogin(BuildContext context) {
@@ -174,5 +210,9 @@ class VolunteerRegistrationProvider extends ChangeNotifier {
 
   void navigateToVolunteerReg2(BuildContext context) {
     Navigator.pushNamed(context, '/volunteerRegister2');
+  }
+
+  void navigateToVolunteerDashboard(BuildContext context) {
+    Navigator.pushNamed(context, '/volunteerHomeScreen');
   }
 }

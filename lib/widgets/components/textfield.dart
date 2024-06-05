@@ -11,6 +11,7 @@ class MyTextField extends StatefulWidget {
   final Widget? suffixIcon;
   final TextStyle? textStyle;
   final Color? fillColor;
+  final ValueChanged<String>? onChanged;
 
   const MyTextField({
     Key? key,
@@ -24,6 +25,7 @@ class MyTextField extends StatefulWidget {
     this.suffixIcon,
     this.textStyle,
     this.fillColor,
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -43,6 +45,7 @@ class _MyTextFieldState extends State<MyTextField> {
           controller: widget.controller,
           obscureText: widget.obsText && _isObscure,
           focusNode: widget.focusNode,
+          onChanged: widget.onChanged,
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(18),

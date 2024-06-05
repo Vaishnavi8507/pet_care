@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:pet_care/provider/pets_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/theme/light_colors.dart';
@@ -15,6 +16,8 @@ class PetRegistration extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final selectedPetType = Provider.of<PetsProvider>(context).selectedPetType;
+
     return Scaffold(
       backgroundColor: LightColors.primaryDarkColor,
       body: Padding(
@@ -24,9 +27,9 @@ class PetRegistration extends StatelessWidget {
             SizedBox(height: 40),
             Center(
               child: Text(
-                'Register Your Pet',
+                'Register Your $selectedPetType',
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 28,
                   color: Colors.black54,
@@ -38,12 +41,7 @@ class PetRegistration extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   color: LightColors.scaffoldBackgroundColor,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40),
-                    bottomRight: Radius.circular(40),
-                    bottomLeft: Radius.circular(40),
-                  ),
+                  borderRadius: BorderRadius.circular(40),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(25.0),
@@ -62,7 +60,7 @@ class PetRegistration extends StatelessWidget {
                                       ? FileImage(File(provider.image!.path))
                                       : null,
                                   child: provider.image == null
-                                      ? Icon(
+                                      ? const  Icon(
                                           Icons.pets,
                                           color: LightColors.textColor,
                                           size: 60,
@@ -73,7 +71,7 @@ class PetRegistration extends StatelessWidget {
                                   bottom: 0,
                                   right: 0,
                                   child: IconButton(
-                                    icon: Icon(
+                                    icon: const Icon(
                                       Icons.add_a_photo,
                                       color: LightColors.textColor,
                                     ),
@@ -109,42 +107,34 @@ class PetRegistration extends StatelessWidget {
                               hintText: 'Age',
                               obsText: false,
                               controller: _ageController,
-                              //keyboardType: TextInputType.number,
                               margin: EdgeInsets.only(bottom: 20),
                               padding: EdgeInsets.zero,
-                              textStyle: TextStyle(color: Colors.black),
-                              fillColor: Colors.white,
-                              prefixIcon: null,
+                              textStyle:
+                                  TextStyle(color: LightColors.textColor),
+                              fillColor: LightColors.backgroundColor,
                             ),
-                            MyTextField(
-                              hintText: 'Weight',
-                              obsText: false,
-                              controller: _ageController,
-                              margin: EdgeInsets.only(bottom: 20),
-                              padding: EdgeInsets.zero,
-                              textStyle: TextStyle(color: Colors.black),
-                              fillColor: Colors.white,
-                              prefixIcon: null,
+                            DropdownButton<String>(
+                              hint: Text("Select Gender"),
+                              value: provider.gender,
+                              items: ['Male', 'Female'].map((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                provider.setGender(newValue!);
+                              },
                             ),
-                            MyTextField(
-                              hintText: 'Gender',
-                              obsText: false,
-                              controller: _ageController,
-                              margin: EdgeInsets.only(bottom: 20),
-                              padding: EdgeInsets.zero,
-                              textStyle: TextStyle(color: Colors.black),
-                              fillColor: Colors.white,
-                              prefixIcon: null,
-                            ),
-                            SizedBox(height: 5),
+                            SizedBox(height: 20),
                             CustomTextButton(
                               onPressed: () {
                                 provider.setPetName(_nameController.text);
                                 provider.setBreed(_breedController.text);
                                 provider.setAge(_ageController.text);
-                                provider.registerPet();
+                                provider.navigateToPetRegistration2(context);
                               },
-                              text: 'Register',
+                              text: 'Next',
                               backgroundColor: LightColors.primaryDarkColor,
                               textColor: LightColors.textColor,
                               fontSize: 15,

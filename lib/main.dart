@@ -2,10 +2,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:pet_care/constants/theme/theme_provider.dart';
 import 'package:pet_care/firebase_options.dart';
+import 'package:pet_care/initial_screen.dart';
 import 'package:pet_care/pages/owner&pet/owner_login.dart';
 import 'package:pet_care/pages/owner&pet/owner_signup.dart';
 import 'package:pet_care/pages/owner&pet/pet_register.dart';
+import 'package:pet_care/pages/owner&pet/pet_register2.dart';
 import 'package:pet_care/pages/pets_page/pets.dart';
+import 'package:pet_care/pages/screens/owner_homescreen.dart';
+import 'package:pet_care/pages/screens/volunteer_homescreen.dart';
 import 'package:pet_care/pages/volunteer/volunteer_login_page.dart';
 import 'package:pet_care/pages/volunteer/volunteer_reg.dart';
 import 'package:pet_care/pages/volunteer/volunter_reg2.dart';
@@ -17,7 +21,8 @@ import 'package:pet_care/provider/pets_provider.dart';
 import 'package:pet_care/provider/register_provider.dart';
 import 'package:pet_care/provider/volunteer_login_provider.dart';
 import 'package:pet_care/provider/volunteer_reg_provider.dart';
-import 'package:pet_care/widgets/forgot_screen.dart';
+import 'package:pet_care/shared_pref_service.dart';
+ import 'package:pet_care/widgets/forgot_screen.dart';
 import 'package:pet_care/widgets/splash_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -25,20 +30,21 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
+  final prefsService = SharedPreferencesService();
+  await prefsService.init();
+
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-            create: (context) => OwnerRegistrationProvider()),
+        ChangeNotifierProvider(create: (context) => OwnerRegistrationProvider()),
         ChangeNotifierProvider(create: (context) => OwnerLoginProvider()),
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
         ChangeNotifierProvider(create: (context) => RegisterProvider()),
         ChangeNotifierProvider(create: (context) => PetsProvider()),
         ChangeNotifierProvider(create: (context) => PetRegistrationProvider()),
-        ChangeNotifierProvider(
-            create: (context) => VolunteerRegistrationProvider()),
+        ChangeNotifierProvider(create: (context) => VolunteerRegistrationProvider()),
         ChangeNotifierProvider(create: (context) => VolunteerLoginProvider()),
-        ChangeNotifierProvider(create: (context) => ForgotPasswordProvider())
+        ChangeNotifierProvider(create: (context) => ForgotPasswordProvider()),
       ],
       child: MyApp(),
     ),
@@ -55,7 +61,8 @@ class MyApp extends StatelessWidget {
       theme: Provider.of<ThemeProvider>(context).themeData,
       initialRoute: '/',
       routes: {
-        '/': (context) => SplashScreen(),
+        '/': (context) => InitialScreen(),
+        '/splashScreen': (context) => InitialScreen(),
         '/ownerReg': (context) => OwnerReg(),
         '/ownerLogin': (context) => OwnerLogin(),
         '/pets': (context) => Pets(),
@@ -63,7 +70,10 @@ class MyApp extends StatelessWidget {
         '/volunteerRegister': (context) => VolunteerReg(),
         '/volunteerLogin': (context) => VolunteerLogin(),
         '/forgotPassword': (context) => ForgotPasswordScreen(),
-        '/volunteerRegister2': (context) => VolunteerRegPage2()
+        '/volunteerRegister2': (context) => VolunteerRegPage2(),
+        '/ownerHomeScreen': (context) => OwnerDashboard(),
+        '/volunteerHomeScreen': (context) => VolunteerDashboard(),
+        '/petRegistration2': (context) => PetRegistration2(),
       },
     );
   }

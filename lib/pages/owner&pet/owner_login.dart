@@ -97,7 +97,7 @@ class OwnerLogin extends StatelessWidget {
                                 provider.setOwnerEmail(_emailController.text);
                                 provider
                                     .setOwnerPassword(_passwordController.text);
-                                provider.ownerLogin();
+                                provider.ownerLogin(context);
                               },
                               text: 'Sign In',
                               backgroundColor: LightColors.primaryDarkColor,
