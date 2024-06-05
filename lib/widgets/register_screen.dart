@@ -65,7 +65,7 @@ class _RegisterState extends State<Register>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Center(
-                    child: Text(
+                    child: const Text(
                       'Hello !',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,

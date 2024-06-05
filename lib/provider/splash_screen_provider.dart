@@ -22,8 +22,7 @@ class SplashScreenProvider with ChangeNotifier {
   }
 
   void _navigateToRegisterScreen() {
-    // Notify listeners that the navigation should happen
-    notifyListeners();
+     notifyListeners();
   }
 
   void dispose() {

@@ -77,7 +77,8 @@ class Pets extends StatelessWidget {
             SizedBox(height: 40),
             ElevatedButton(
               onPressed: () {
-                _navigateToPetRegistration(context);
+                Provider.of<PetsProvider>(context, listen: false)
+                    .navigateToPetRegistration(context);
               },
               child: Text('Next'),
               style: ElevatedButton.styleFrom(

@@ -79,7 +79,7 @@ class VolunteerLogin extends StatelessWidget {
                               onPressed: () {
                                 provider.setVolunteerEmail(_volunteerEmailController.text);
                                 provider.setVolunteerPassword(_volunteerPasswordController.text);
-                                provider.volunteerLogin();
+                                provider.volunteerLogin(context);
                               },
                               text: 'Sign In',
                               backgroundColor: LightColors.primaryDarkColor,

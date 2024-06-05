@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pet_care/constants/snackbar.dart';
 import 'package:pet_care/services/auth_service.dart/owner_authservice.dart';
 import 'package:pet_care/services/firestore_service/owner_firestore.dart';
-import 'package:provider/provider.dart';
+import 'package:pet_care/shared_pref_service.dart';
 
 class OwnerRegistrationProvider extends ChangeNotifier {
   String _name = '';
@@ -13,11 +13,13 @@ class OwnerRegistrationProvider extends ChangeNotifier {
   String _age = '';
   String _occupation = '';
   bool _isPasswordVisible = false;
+  bool _isOwnerLoggedIn = false;
 
   final String _role = 'owner';
 
   final AuthService _authService = AuthService();
   final FireStoreService _fireStoreService = FireStoreService();
+  final SharedPreferencesService _prefsService = SharedPreferencesService();
 
   String get name => _name;
   String get email => _email;
@@ -26,6 +28,7 @@ class OwnerRegistrationProvider extends ChangeNotifier {
   String get age => _age;
   String get occupation => _occupation;
   bool get isPasswordVisible => _isPasswordVisible;
+  bool get isOwnerLoggedIn => _isOwnerLoggedIn;
 
   void setName(String name) {
     _name = name;
@@ -63,11 +66,7 @@ class OwnerRegistrationProvider extends ChangeNotifier {
   }
 
   Future<void> signUp(BuildContext context) async {
-    if (_name.isEmpty ||
-        _email.isEmpty ||
-        _password.isEmpty ||
-        _phoneNo.isEmpty ||
-        _age.isEmpty) {
+    if (_name.isEmpty || _email.isEmpty || _password.isEmpty || _phoneNo.isEmpty || _age.isEmpty) {
       showSnackBar(context, 'All fields are required!');
       print("All fields are required!");
       return;
@@ -98,12 +97,35 @@ class OwnerRegistrationProvider extends ChangeNotifier {
         occupation: occupation,
         role: _role,
       );
+
+      await _prefsService.setBool('isLoggedIn', true);
+      _isOwnerLoggedIn = true;
+
       showSnackBar(context, "Owner signed up and details saved");
+      navigateToPets(context);
+
       print('Owner signed up and details saved');
     }
   }
 
   void navigateToOwnerLogin(BuildContext context) {
     Navigator.pushNamed(context, '/ownerLogin');
+  }
+
+  void navigateToOwnerDashboard(BuildContext context) {
+    Navigator.pushNamed(context, '/ownerHomeScreen');
+  }
+
+  void navigateToPets(BuildContext context) {
+    Navigator.pushNamed(context, '/pets');
+  }
+
+  Future<void> checkOwnerLoginStatus() async {
+    _isOwnerLoggedIn = _prefsService.getBool('isLoggedIn');
+    notifyListeners();
+  }
+
+  void navigateToSplashScreen(BuildContext context) {
+    Navigator.pushNamed(context, '/');
   }
 }

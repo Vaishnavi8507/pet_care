@@ -120,15 +120,21 @@ class VolunteerReg extends StatelessWidget {
                             SizedBox(height: 5),
                             CustomTextButton(
                               onPressed: () {
-                                provider.setVolunteerName(_volunteerNameController.text);
-                                provider.setVolunteerEmail(_volunteerEmailController.text);
-                                provider.setVolunteerPassword(_volunteerPasswordController.text);
-                                provider.setVolunteerPhoneNo(_volunteerPhoneNoController.text);
-                                provider.setVolunteerAge(_volunteerAgeController.text);
-                                provider.setVolunteerOccupation(_volunteerOccupationController.text);
-                                provider.volunteerSignUp();
+                                provider.setVolunteerName(
+                                    _volunteerNameController.text);
+                                provider.setVolunteerEmail(
+                                    _volunteerEmailController.text);
+                                provider.setVolunteerPassword(
+                                    _volunteerPasswordController.text);
+                                provider.setVolunteerPhoneNo(
+                                    _volunteerPhoneNoController.text);
+                                provider.setVolunteerAge(
+                                    _volunteerAgeController.text);
+                                provider.setVolunteerOccupation(
+                                    _volunteerOccupationController.text);
+                                provider.navigateToVolunteerReg2(context);
                               },
-                              text: 'Sign Up',
+                              text: 'Next',
                               backgroundColor: LightColors.primaryDarkColor,
                               textColor: LightColors.textColor,
                               fontSize: 15,
@@ -137,25 +143,26 @@ class VolunteerReg extends StatelessWidget {
                             SizedBox(height: 12),
                             RichText(
                               text: TextSpan(
-                                  text: 'Already have an account?',
-                                  style: TextStyle(
-                                    color: LightColors.textColor,
-                                    fontSize: 16,
-                                  ),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: ' ',
+                                text: 'Already have an account?',
+                                style: TextStyle(
+                                  color: LightColors.textColor,
+                                  fontSize: 16,
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(text: ' '),
+                                  TextSpan(
+                                    text: 'Sign In',
+                                    style: TextStyle(
+                                      fontSize: 14,
                                     ),
-                                    TextSpan(
-                                        text: 'Sign In',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                        ),
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = () {
-                                            provider.navigateToVolunteerLogin(context);
-                                          })
-                                  ]),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        provider
+                                            .navigateToVolunteerLogin(context);
+                                      },
+                                  )
+                                ],
+                              ),
                             ),
                           ],
                         ),
