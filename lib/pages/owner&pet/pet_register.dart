@@ -13,6 +13,7 @@ class PetRegistration extends StatelessWidget {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _breedController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
+  final TextEditingController _weightController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +61,7 @@ class PetRegistration extends StatelessWidget {
                                       ? FileImage(File(provider.image!.path))
                                       : null,
                                   child: provider.image == null
-                                      ? const  Icon(
+                                      ? const Icon(
                                           Icons.pets,
                                           color: LightColors.textColor,
                                           size: 60,
@@ -132,6 +133,7 @@ class PetRegistration extends StatelessWidget {
                                 provider.setPetName(_nameController.text);
                                 provider.setBreed(_breedController.text);
                                 provider.setAge(_ageController.text);
+                                // provider.setWeight(_weightController.text);
                                 provider.navigateToPetRegistration2(context);
                               },
                               text: 'Next',

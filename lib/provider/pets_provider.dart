@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 class PetsProvider with ChangeNotifier {
   int _currentIndex = 0;
   final List<String> _images = [
@@ -29,5 +30,9 @@ class PetsProvider with ChangeNotifier {
 
   void navigateToPetRegistration(BuildContext context) {
     Navigator.pushNamed(context, '/petRegister');
+  }
+
+  void navigateToPetsPage() {
+    //Navigator.pushNamed(context, '/pets');
   }
 }

@@ -130,9 +130,9 @@ class OwnerReg extends StatelessWidget {
                                 provider.setAge(_ageController.text);
                                 provider
                                     .setOccupation(_occupationController.text);
-                                await provider.signUp(context);
 
-                                  },
+                                await provider.signUp(context);
+                              },
                               text: 'Sign Up',
                               backgroundColor: LightColors.primaryDarkColor,
                               textColor: LightColors.textColor,

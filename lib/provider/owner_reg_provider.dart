@@ -66,7 +66,11 @@ class OwnerRegistrationProvider extends ChangeNotifier {
   }
 
   Future<void> signUp(BuildContext context) async {
-    if (_name.isEmpty || _email.isEmpty || _password.isEmpty || _phoneNo.isEmpty || _age.isEmpty) {
+    if (_name.isEmpty ||
+        _email.isEmpty ||
+        _password.isEmpty ||
+        _phoneNo.isEmpty ||
+        _age.isEmpty) {
       showSnackBar(context, 'All fields are required!');
       print("All fields are required!");
       return;
@@ -97,6 +101,8 @@ class OwnerRegistrationProvider extends ChangeNotifier {
         occupation: occupation,
         role: _role,
       );
+      setName(_name);
+      setEmail(_email);
 
       await _prefsService.setBool('isLoggedIn', true);
       _isOwnerLoggedIn = true;

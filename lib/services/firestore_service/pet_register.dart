@@ -3,9 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class FireStoreService {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
-
-
-Future<bool> isPetNameDuplicate(String ownerEmail, String petName) async {
+  Future<bool> isPetNameDuplicate(String ownerEmail, String petName) async {
     try {
       QuerySnapshot query = await _fireStore
           .collection('pets')
@@ -20,6 +18,7 @@ Future<bool> isPetNameDuplicate(String ownerEmail, String petName) async {
       return false;
     }
   }
+
   Future<void> savePetDetails({
     required String ownerEmail,
     required String petName,
@@ -34,19 +33,21 @@ Future<bool> isPetNameDuplicate(String ownerEmail, String petName) async {
     required String energyLevel,
     required String feedingSchedule,
     required bool canBeLeftAlone,
-    required String selectedPetType
+    required String selectedPetType,
+    //required String weight
   }) async {
     try {
       await _fireStore
-      .collection('pets')
-      .doc(ownerEmail)
-      .collection('pets')
-      .add({
+          .collection('pets')
+          .doc(ownerEmail)
+          .collection('pets')
+          .add({
         'ownerEmail': ownerEmail,
         'petName': petName,
         'breed': breed,
         'age': age,
         'gender': gender,
+        // 'weight': weight,
         'imagePath': imagePath,
         'friendlyWithChildren': friendlyWithChildren,
         'friendlyWithOtherPets': friendlyWithOtherPets,
@@ -55,8 +56,7 @@ Future<bool> isPetNameDuplicate(String ownerEmail, String petName) async {
         'energyLevel': energyLevel,
         'feedingSchedule': feedingSchedule,
         'canBeLeftAlone': canBeLeftAlone,
-        'selectedPetType':selectedPetType
-        
+        'selectedPetType': selectedPetType
       });
     } catch (e) {
       print('Error saving pet details: $e');

@@ -6,21 +6,15 @@ import 'package:pet_care/constants/theme/light_colors.dart';
 final ThemeData lightMode = ThemeData(
   // Primary colors
   primaryColor: LightColors.primaryColor,
-  colorScheme: ColorScheme.fromSwatch().copyWith(
-    secondary: LightColors.accentColor,
-  ),
-
-  // Background colors
-  backgroundColor: LightColors.backgroundColor,
   scaffoldBackgroundColor: LightColors.scaffoldBackgroundColor,
 
   // Error color
-  errorColor: LightColors.errorColor,
+  cardColor: LightColors.errorColor,
 
   // Text theme
   textTheme: const TextTheme(
-    bodyText1: TextStyle(color: LightColors.textColor),
-    bodyText2: TextStyle(color: LightColors.textColorLight),
+    bodyLarge: TextStyle(color: LightColors.textColor),
+    bodyMedium: TextStyle(color: LightColors.textColorLight),
   ),
 
   // Elevated button theme
@@ -37,29 +31,33 @@ final ThemeData lightMode = ThemeData(
       foregroundColor: LightColors.buttonColor,
     ),
   ),
+  colorScheme: ColorScheme.fromSwatch()
+      .copyWith(
+        secondary: LightColors.accentColor,
+      )
+      .copyWith(background: LightColors.backgroundColor),
 );
-
-
-
 
 // Dark Theme Configuration
 final ThemeData darkMode = ThemeData(
   // Primary colors
   primaryColor: DarkColors.primaryColor,
-  colorScheme: ColorScheme.fromSwatch().copyWith(
-    secondary: DarkColors.accentColor,
-  ).copyWith(
-    background: DarkColors.backgroundColor,
-    error: DarkColors.errorColor,
-  ),
+  colorScheme: ColorScheme.fromSwatch()
+      .copyWith(
+        secondary: DarkColors.accentColor,
+      )
+      .copyWith(
+        background: DarkColors.backgroundColor,
+        error: DarkColors.errorColor,
+      ),
 
   // Background colors
   scaffoldBackgroundColor: DarkColors.scaffoldBackgroundColor,
 
   // Text theme
   textTheme: const TextTheme(
-    bodyText1: TextStyle(color: DarkColors.textColor),
-    bodyText2: TextStyle(color: DarkColors.textColorLight),
+    bodyLarge: TextStyle(color: DarkColors.textColor),
+    bodyMedium: TextStyle(color: DarkColors.textColorLight),
   ),
 
   // Elevated button theme

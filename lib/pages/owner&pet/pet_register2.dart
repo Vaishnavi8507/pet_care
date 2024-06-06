@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:pet_care/widgets/components/tooltips.dart';
 import 'package:provider/provider.dart';
 
@@ -9,7 +8,8 @@ import '../../widgets/components/text_button.dart';
 import '../../widgets/components/textfield.dart';
 
 class PetRegistration2 extends StatelessWidget {
-  final TextEditingController _feedingScheduleController = TextEditingController();
+  final TextEditingController _feedingScheduleController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class PetRegistration2 extends StatelessWidget {
           children: [
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.only(top: 20.0),  
+                padding: const EdgeInsets.only(top: 20.0),
                 child: Container(
                   decoration: BoxDecoration(
                     color: LightColors.scaffoldBackgroundColor,
@@ -36,11 +36,13 @@ class PetRegistration2 extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               // Additional Info Header
-                             const Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              const Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Padding(
-                                    padding: EdgeInsets.only(bottom: 8.0, left: 8.0),
+                                    padding:
+                                        EdgeInsets.only(bottom: 8.0, left: 8.0),
                                     child: Text(
                                       'Additional Info',
                                       style: TextStyle(
@@ -106,11 +108,13 @@ class PetRegistration2 extends StatelessWidget {
                               ),
                               SizedBox(height: 20),
                               // Care Info Header
-                             const  Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              const Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Padding(
-                                    padding: EdgeInsets.only(bottom: 8.0, left: 8.0),
+                                    padding:
+                                        EdgeInsets.only(bottom: 8.0, left: 8.0),
                                     child: Text(
                                       'Care Info',
                                       style: TextStyle(
@@ -121,31 +125,39 @@ class PetRegistration2 extends StatelessWidget {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(bottom: 8.0, right: 8.0),
+                                    padding: EdgeInsets.only(
+                                        bottom: 8.0, right: 8.0),
                                     child: const Icon(Icons.info_outlined),
                                   ),
                                 ],
                               ),
                               // Walks per Day
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text('Walks per Day', style: TextStyle(color: Colors.black)),
+                                  Text('Walks per Day',
+                                      style: TextStyle(color: Colors.black)),
                                   Row(
                                     children: [
                                       IconButton(
                                         icon: Icon(Icons.remove),
                                         onPressed: () {
                                           if (provider.walksPerDay > 0) {
-                                            provider.setWalksPerDay(provider.walksPerDay - 1);
+                                            provider.setWalksPerDay(
+                                                provider.walksPerDay - 1);
                                           }
                                         },
                                       ),
-                                      Text(provider.walksPerDay.toString(), style: TextStyle(color: Colors.black),),
+                                      Text(
+                                        provider.walksPerDay.toString(),
+                                        style: TextStyle(color: Colors.black),
+                                      ),
                                       IconButton(
                                         icon: Icon(Icons.add),
                                         onPressed: () {
-                                          provider.setWalksPerDay(provider.walksPerDay + 1);
+                                          provider.setWalksPerDay(
+                                              provider.walksPerDay + 1);
                                         },
                                       ),
                                     ],
@@ -154,7 +166,8 @@ class PetRegistration2 extends StatelessWidget {
                               ),
                               // Energy Level
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     'Energy Level',
@@ -163,7 +176,8 @@ class PetRegistration2 extends StatelessWidget {
                                   DropdownButton<String>(
                                     hint: Text('Energy Level'),
                                     value: provider.energyLevel,
-                                    items: ['Low', 'Medium', 'High'].map((String value) {
+                                    items: ['Low', 'Medium', 'High']
+                                        .map((String value) {
                                       return DropdownMenuItem<String>(
                                         value: value,
                                         child: Text(value),
@@ -175,7 +189,9 @@ class PetRegistration2 extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 6,),
+                              SizedBox(
+                                height: 6,
+                              ),
                               // Feeding Schedule
                               MyTextField(
                                 hintText: 'Feeding Schedule',
@@ -183,7 +199,8 @@ class PetRegistration2 extends StatelessWidget {
                                 controller: _feedingScheduleController,
                                 margin: EdgeInsets.only(bottom: 20),
                                 padding: EdgeInsets.zero,
-                                textStyle: TextStyle(color: LightColors.textColor),
+                                textStyle:
+                                    TextStyle(color: LightColors.textColor),
                                 fillColor: LightColors.backgroundColor,
                                 onChanged: (value) {
                                   provider.setFeedingSchedule(value);
