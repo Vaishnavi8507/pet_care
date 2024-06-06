@@ -44,18 +44,28 @@ class OwnerDashboard extends StatelessWidget {
               children: [
                 if (imagePath != null)
                   CircleAvatar(
+<<<<<<< HEAD
                     radius: 30,
+=======
+                    radius: 40,
+>>>>>>> cbc957f4effc1a37531d16e72035f99369c664a9
                     backgroundImage: FileImage(File(imagePath)),
                   ),
                 SizedBox(width: 20),
                 CircleAvatar(
                   backgroundColor: Colors.black, // LightColors.textColor,
+<<<<<<< HEAD
                   radius: 30,
                   child: IconButton(
                     icon: Icon(
                       Icons.add,
                       size: 20,
                     ),
+=======
+                  radius: 40,
+                  child: IconButton(
+                    icon: Icon(Icons.add),
+>>>>>>> cbc957f4effc1a37531d16e72035f99369c664a9
                     onPressed: () {
                       // Navigating to pets page using the provider
                       Provider.of<NavigationProvider>(context, listen: false)
