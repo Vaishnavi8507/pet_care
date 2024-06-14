@@ -1,5 +1,9 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:pet_care/constants/theme/light_colors.dart';
+import 'package:pet_care/pages/screens/reminder_screen.dart';
+import 'package:pet_care/provider/reminder_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:pet_care/provider/get_ownerData_provider.dart';
 import 'package:pet_care/provider/get_petData_provider.dart';
@@ -10,7 +14,6 @@ class OwnerDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     final petsDetailsProvider = Provider.of<PetsDetailsGetterProvider>(context);
     final ownerDashboardProvider = Provider.of<OwnerDashboardProvider>(context);
-    // final ownerDetailsProvider = Provider.of<OwnerDetailsGetterProvider>(context);
 
     return Scaffold(
       body: Container(
@@ -21,7 +24,7 @@ class OwnerDashboard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                   'Hello Hooman',
                   style: TextStyle(
                     fontSize: 20,
@@ -33,7 +36,7 @@ class OwnerDashboard extends StatelessWidget {
                   onTap: () {
                     Navigator.pushNamed(context, '/ownerEditProfile');
                   },
-                  child: const CircleAvatar(
+                  child: CircleAvatar(
                     radius: 20,
                     child: Icon(Icons.person, color: Colors.white),
                     backgroundColor: Colors.blue,
@@ -63,15 +66,13 @@ class OwnerDashboard extends StatelessWidget {
                                     radius: 30,
                                     backgroundImage: pet['imagePath'] != null
                                         ? FileImage(File(pet['imagePath']))
-                                        : AssetImage(
-                                                'assets/default_profile.png')
-                                            as ImageProvider<Object>,
+                                        : AssetImage('assets/default_profile.png') as ImageProvider<Object>,
                                   ),
                                 ),
                               );
                             },
                           )
-                        : Center(child: CircularProgressIndicator()), // Show CircularProgressIndicator if data is not loaded
+                        : Center(child: CircularProgressIndicator()),
                   ),
                 ),
                 CircleAvatar(
@@ -96,13 +97,12 @@ class OwnerDashboard extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10),
-            // Use Consumer to rebuild the card widget when data is loaded
             Consumer<PetsDetailsGetterProvider>(
               builder: (context, petsDetailsProvider, child) {
                 if (petsDetailsProvider.isDataLoaded &&
                     petsDetailsProvider.pets.isNotEmpty) {
-                  final pet = petsDetailsProvider
-                      .pets[ownerDashboardProvider.selectedPetIndex];
+                  final pet =
+                      petsDetailsProvider.pets[ownerDashboardProvider.selectedPetIndex];
 
                   return Container(
                     padding: EdgeInsets.all(10),
@@ -117,8 +117,7 @@ class OwnerDashboard extends StatelessWidget {
                           radius: 40,
                           backgroundImage: pet['imagePath'] != null
                               ? FileImage(File(pet['imagePath']))
-                              : AssetImage('assets/images/default_profile.png')
-                                  as ImageProvider<Object>,
+                              : AssetImage('assets/images/default_profile.png') as ImageProvider<Object>,
                         ),
                         SizedBox(width: 20),
                         Expanded(
@@ -127,18 +126,15 @@ class OwnerDashboard extends StatelessWidget {
                             children: [
                               Text(
                                 'Name: ${pet['petName']}',
-                                style: TextStyle(
-                                    fontSize: 18, color: Colors.black),
+                                style: TextStyle(fontSize: 18, color: Colors.black),
                               ),
                               Text(
                                 'Breed: ${pet['breed']}',
-                                style: TextStyle(
-                                    fontSize: 18, color: Colors.black),
+                                style: TextStyle(fontSize: 18, color: Colors.black),
                               ),
                               Text(
                                 'Age: ${pet['age']}',
-                                style: TextStyle(
-                                    fontSize: 18, color: Colors.black),
+                                style: TextStyle(fontSize: 18, color: Colors.black),
                               ),
                             ],
                           ),
@@ -147,14 +143,177 @@ class OwnerDashboard extends StatelessWidget {
                     ),
                   );
                 } else {
-                  return Center(
-                      child: CircularProgressIndicator()); // Show CircularProgressIndicator while loading
+                  return Center(child: CircularProgressIndicator());
                 }
               },
+            ),
+            SizedBox(height: 20),
+            Container(
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: Colors.black),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Services',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: 5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Column(
+                        children: [
+                          Container(
+                            width: 55,
+                            height: 55,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: IconButton(
+                              icon: Image.asset('assets/icons/reminderr.png',
+                                  width: 30, height: 30),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ChangeNotifierProvider(
+                                      create: (_) => ReminderProvider(),
+                                      child: ReminderScreen(),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          SizedBox(height: 5),
+                          Text(
+                            'Reminder',
+                            style: TextStyle(
+                              color: LightColors.textColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Container(
+                            width: 55,
+                            height: 55,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: IconButton(
+                              icon: Image.asset('assets/icons/pet-care.png',
+                                  width: 30, height: 30),
+                              onPressed: () {
+                                // Add your onPressed logic here
+                              },
+                            ),
+                          ),
+                          SizedBox(height: 5),
+                          Text(
+                            'Pet Sitting',
+                            style: TextStyle(
+                              color: LightColors.textColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Container(
+                            width: 55,
+                            height: 55,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: IconButton(
+                              icon: Image.asset('assets/icons/sad.png',
+                                  width: 30, height: 30),
+                              onPressed: () {
+                                // Add your onPressed logic here
+                              },
+                            ),
+                          ),
+                          SizedBox(height: 5),
+                          Container(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                'Lost your pet',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: LightColors.textColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Container(
+                            width: 55,
+                            height: 55,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: IconButton(
+                              icon: Image.asset('assets/icons/more.png',
+                                  width: 30, height: 30),
+                              onPressed: () {
+                                // Add your onPressed logic here
+                              },
+                            ),
+                          ),
+                          SizedBox(height: 5),
+                          Text(
+                            'More',
+                            style: TextStyle(
+                              color: LightColors.textColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),
       ),
     );
+  }
+}
+
+
+
+class NavigationProvider extends ChangeNotifier {
+  void navigateToPetsPage() {
+    // Navigate to pets page logic here
+    // For example:
+    // Navigator.pushNamed(context, '/petsPage');
   }
 }
