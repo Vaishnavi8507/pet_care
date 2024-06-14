@@ -92,19 +92,23 @@ class OwnerLogin extends StatelessWidget {
                               ),
                             ),
                             SizedBox(height: 10),
-                            CustomTextButton(
-                              onPressed: () {
-                                provider.setOwnerEmail(_emailController.text);
-                                provider
-                                    .setOwnerPassword(_passwordController.text);
-                                provider.ownerLogin(context);
-                              },
-                              text: 'Sign In',
-                              backgroundColor: LightColors.primaryDarkColor,
-                              textColor: LightColors.textColor,
-                              fontSize: 15,
-                              width: 100,
-                            ),
+                            provider.isLoading
+                                ? CircularProgressIndicator()
+                                : CustomTextButton(
+                                    onPressed: () {
+                                      provider
+                                          .setOwnerEmail(_emailController.text);
+                                      provider.setOwnerPassword(
+                                          _passwordController.text);
+                                      provider.ownerLogin(context);
+                                    },
+                                    text: 'Sign In',
+                                    backgroundColor:
+                                        LightColors.primaryDarkColor,
+                                    textColor: LightColors.textColor,
+                                    fontSize: 15,
+                                    width: 100,
+                                  ),
                             SizedBox(height: 12),
                             RichText(
                               text: TextSpan(

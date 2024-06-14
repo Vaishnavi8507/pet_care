@@ -7,7 +7,7 @@ import 'package:pet_care/services/firestore_service/owner_firestore.dart';
 import 'package:pet_care/shared_pref_service.dart';
 import 'package:provider/provider.dart';
 
-class OwnerRegistrationProvider extends ChangeNotifier {
+class OwnerRegistrationProvider with ChangeNotifier {
   String _name = '';
   String _email = '';
   String _password = '';
@@ -16,6 +16,9 @@ class OwnerRegistrationProvider extends ChangeNotifier {
   String _occupation = '';
   bool _isPasswordVisible = false;
   bool _isOwnerLoggedIn = false;
+
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
 
   final String _role = 'owner';
 
@@ -31,6 +34,11 @@ class OwnerRegistrationProvider extends ChangeNotifier {
   String get occupation => _occupation;
   bool get isPasswordVisible => _isPasswordVisible;
   bool get isOwnerLoggedIn => _isOwnerLoggedIn;
+
+  void setLoading(bool loading) {
+    _isLoading = loading;
+    notifyListeners();
+  }
 
   void setName(String name) {
     _name = name;
@@ -79,7 +87,7 @@ class OwnerRegistrationProvider extends ChangeNotifier {
     }
 
     if (_password.length < 8) {
-      showSnackBar(context, 'Password should be atleast 8 characters!');
+      showSnackBar(context, 'Password should be at least 8 characters!');
       print("Password should be at least 8 characters");
       return;
     }
@@ -91,29 +99,44 @@ class OwnerRegistrationProvider extends ChangeNotifier {
       return;
     }
 
-    User? user = await _authService.signUp(_email, _password);
+    setLoading(true); // Set loading to true
 
-    if (user != null) {
-      await _fireStoreService.saveUserDetails(
-        userId: user.uid,
-        name: name,
-        email: email,
-        phoneNo: phoneNo,
-        age: age,
-        occupation: occupation,
-        role: _role,
-      );
-      setName(_name);
-      setEmail(_email);
+    try {
+      User? user = await _authService.signUp(_email, _password);
 
-      await _prefsService.setBool('isLoggedIn', true);
-      _isOwnerLoggedIn = true;
+      if (user != null) {
+        await _fireStoreService.saveUserDetails(
+          userId: user.uid,
+          name: name,
+          email: email,
+          phoneNo: phoneNo,
+          age: age,
+          occupation: occupation,
+          role: _role,
+        );
 
-      showSnackBar(context, "Owner signed up and details saved");
-      Provider.of<OwnerDetailsGetterProvider>(context, listen: false).loadUserProfile();
-      navigateToPets(context);
+        // Update local state after successful signup
+        setName(_name);
+        setEmail(_email);
+        _isOwnerLoggedIn = true;
+        await _prefsService.setBool('isLoggedIn', true);
 
-      print('Owner signed up and details saved');
+        showSnackBar(context, "Owner signed up and details saved");
+
+        // Load user profile details (if needed)
+        Provider.of<OwnerDetailsGetterProvider>(context, listen: false)
+            .loadUserProfile();
+
+        // Navigate to the next screen after successful signup
+        navigateToPets(context);
+
+        print('Owner signed up and details saved');
+      }
+    } catch (e) {
+      print('Error signing up: $e');
+      showSnackBar(context, 'Failed to sign up. Please try again later.');
+    } finally {
+      setLoading(false); // Set loading to false in any case
     }
   }
 
@@ -126,11 +149,11 @@ class OwnerRegistrationProvider extends ChangeNotifier {
   }
 
   void navigateToPets(BuildContext context) {
-    Navigator.pushNamed(context, '/pets');
+    Navigator.pushReplacementNamed(context, '/pets');
   }
 
   Future<void> checkOwnerLoginStatus() async {
-    _isOwnerLoggedIn = _prefsService.getBool('isLoggedIn');
+    _isOwnerLoggedIn = _prefsService.getBool('isLoggedIn') ?? false;
     notifyListeners();
   }
 

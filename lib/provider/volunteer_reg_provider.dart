@@ -4,7 +4,7 @@ import 'package:pet_care/constants/snackbar.dart';
 import 'package:pet_care/services/auth_service.dart/owner_authservice.dart';
 import 'package:pet_care/services/firestore_service/volunteer_firestore.dart';
 import 'package:pet_care/shared_pref_service.dart';
- 
+
 class VolunteerRegistrationProvider extends ChangeNotifier {
   String _volunteerName = '';
   String _volunteerEmail = '';
@@ -206,6 +206,10 @@ class VolunteerRegistrationProvider extends ChangeNotifier {
 
   void navigateToVolunteerLogin(BuildContext context) {
     Navigator.pushNamed(context, '/volunteerLogin');
+  }
+
+  void navigateToVolunteerReg(BuildContext context) {
+    Navigator.pushNamed(context, '/volunteerReg');
   }
 
   void navigateToVolunteerReg2(BuildContext context) {

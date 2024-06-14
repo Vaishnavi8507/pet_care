@@ -4,6 +4,7 @@ import 'package:pet_care/provider/volunteer_reg_provider.dart';
 import 'package:pet_care/widgets/components/text_button.dart';
 import 'package:pet_care/widgets/components/textfield.dart';
 import 'package:provider/provider.dart';
+
 import '../../constants/theme/light_colors.dart';
 
 class VolunteerReg extends StatelessWidget {
@@ -23,11 +24,11 @@ class VolunteerReg extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 2),
+            SizedBox(height: 15),
             Image.asset(
-              'assets/images/landing-2.jpg',
-              height: 100,
-              width: 90,
+              'assets/images/landing-2.png',
+              height: 120,
+              width: 120,
             ),
             Expanded(
               child: Container(
@@ -75,10 +76,10 @@ class VolunteerReg extends StatelessWidget {
                               focusNode: FocusNode(),
                               prefixIcon: Icon(Icons.lock_outline),
                               suffixIcon: IconButton(
-                                icon: Icon(
-                                  provider.isPasswordVisible
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
+                                icon: ImageIcon(
+                                  AssetImage(provider.isPasswordVisible
+                                      ? 'assets/images/pet-icon.png'
+                                      : 'assets/images/pet-icon.png'),
                                 ),
                                 onPressed: () {
                                   provider.toggleVolunteerPasswordVisibility();

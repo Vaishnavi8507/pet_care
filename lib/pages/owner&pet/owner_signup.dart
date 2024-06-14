@@ -24,7 +24,7 @@ class OwnerReg extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 2),
+            SizedBox(height: 10),
             Image.asset(
               'assets/images/pe.png',
               height: 100,
@@ -121,24 +121,29 @@ class OwnerReg extends StatelessWidget {
                               fillColor: Colors.white,
                             ),
                             SizedBox(height: 5),
-                            CustomTextButton(
-                              onPressed: () async {
-                                provider.setName(_nameController.text);
-                                provider.setEmail(_emailController.text);
-                                provider.setPassword(_passwordController.text);
-                                provider.setPhoneNo(_phoneNoController.text);
-                                provider.setAge(_ageController.text);
-                                provider
-                                    .setOccupation(_occupationController.text);
+                            provider.isLoading
+                                ? CircularProgressIndicator()
+                                : CustomTextButton(
+                                    onPressed: () async {
+                                      provider.setName(_nameController.text);
+                                      provider.setEmail(_emailController.text);
+                                      provider.setPassword(
+                                          _passwordController.text);
+                                      provider
+                                          .setPhoneNo(_phoneNoController.text);
+                                      provider.setAge(_ageController.text);
+                                      provider.setOccupation(
+                                          _occupationController.text);
 
-                                await provider.signUp(context);
-                              },
-                              text: 'Sign Up',
-                              backgroundColor: LightColors.primaryDarkColor,
-                              textColor: LightColors.textColor,
-                              fontSize: 15,
-                              width: 100,
-                            ),
+                                      await provider.signUp(context);
+                                    },
+                                    text: 'Sign Up',
+                                    backgroundColor:
+                                        LightColors.primaryDarkColor,
+                                    textColor: LightColors.textColor,
+                                    fontSize: 15,
+                                    width: 100,
+                                  ),
                             SizedBox(height: 12),
                             RichText(
                               text: TextSpan(

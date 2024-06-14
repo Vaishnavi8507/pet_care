@@ -20,10 +20,10 @@ class VolunteerLogin extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 10),
+            SizedBox(height: 15),
             Image.asset(
-              'assets/images/landing.jpg',
-              height: 150,
+              'assets/images/pet-human.png',
+              height: 250,
               width: 100,
             ),
             Expanded(
@@ -62,10 +62,10 @@ class VolunteerLogin extends StatelessWidget {
                               focusNode: FocusNode(),
                               prefixIcon: Icon(Icons.lock_outline),
                               suffixIcon: IconButton(
-                                icon: Icon(
-                                  provider.isVolunteerPasswordVisible
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
+                                icon: ImageIcon(
+                                  AssetImage(provider.isVolunteerPasswordVisible
+                                      ? 'assets/images/pet-icon.png'
+                                      : 'assets/images/pet-icon.png'),
                                 ),
                                 onPressed: () {
                                   provider.toggleVolunteerPasswordVisibility();
@@ -77,8 +77,10 @@ class VolunteerLogin extends StatelessWidget {
                             SizedBox(height: 5),
                             CustomTextButton(
                               onPressed: () {
-                                provider.setVolunteerEmail(_volunteerEmailController.text);
-                                provider.setVolunteerPassword(_volunteerPasswordController.text);
+                                provider.setVolunteerEmail(
+                                    _volunteerEmailController.text);
+                                provider.setVolunteerPassword(
+                                    _volunteerPasswordController.text);
                                 provider.volunteerLogin(context);
                               },
                               text: 'Sign In',
@@ -100,16 +102,16 @@ class VolunteerLogin extends StatelessWidget {
                                       text: ' ',
                                     ),
                                     TextSpan(
-                                        text: 'Sign Up',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.grey,
-                                        ),
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = () {
-                                            Navigator.pushNamed(
-                                                context, '/volunteerReg');
-                                          })
+                                      text: 'Sign Up',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey,
+                                      ),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          //provider.navigateToVolunteerReg(context);
+                                        },
+                                    )
                                   ]),
                             ),
                           ],

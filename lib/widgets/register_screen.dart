@@ -127,7 +127,6 @@ class _RegisterState extends State<Register>
                               builder: (context, provider, child) {
                                 return CustomTextButton(
                                   text: 'Owner',
-                                  
                                   onPressed: () {
                                     provider.navigateToOwner(context);
                                   },
@@ -136,10 +135,9 @@ class _RegisterState extends State<Register>
                                   fontSize: 15,
                                   width: 160,
                                   textStyle: TextStyle(
-                                    fontSize: 28, // Customize the font size
-                                    fontWeight: FontWeight.bold, // Customize the font weight
-                                    letterSpacing: 1.2, // Customize the letter spacing
-                                     // Customize the font style
+                                    fontSize: 28,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 1.2,
                                   ),
                                 );
                               },
@@ -151,7 +149,7 @@ class _RegisterState extends State<Register>
                                 onPressed: () {
                                   provider.navigateToVolunteer(context);
                                 },
-                                backgroundColor: LightColors.buttonColor,
+                                backgroundColor: LightColors.backgroundColor,
                                 textColor: LightColors.textColor,
                                 fontSize: 15,
                                 width: 160,

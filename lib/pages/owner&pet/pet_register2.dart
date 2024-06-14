@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import '../../constants/theme/light_colors.dart';
 import '../../provider/pet_reg_provider.dart';
 import '../../widgets/components/text_button.dart';
-import '../../widgets/components/textfield.dart';
 
 class PetRegistration2 extends StatelessWidget {
   final TextEditingController _feedingScheduleController =
@@ -169,10 +168,8 @@ class PetRegistration2 extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    'Energy Level',
-                                    style: TextStyle(color: Colors.black),
-                                  ),
+                                  Text('Energy Level',
+                                      style: TextStyle(color: Colors.black)),
                                   DropdownButton<String>(
                                     hint: Text('Energy Level'),
                                     value: provider.energyLevel,
@@ -189,35 +186,48 @@ class PetRegistration2 extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                height: 6,
-                              ),
+                              SizedBox(height: 6),
                               // Feeding Schedule
-                              MyTextField(
-                                hintText: 'Feeding Schedule',
-                                obsText: false,
-                                controller: _feedingScheduleController,
-                                margin: EdgeInsets.only(bottom: 20),
-                                padding: EdgeInsets.zero,
-                                textStyle:
-                                    TextStyle(color: LightColors.textColor),
-                                fillColor: LightColors.backgroundColor,
-                                onChanged: (value) {
-                                  provider.setFeedingSchedule(value);
-                                },
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('Feeding Schedule',
+                                      style: TextStyle(color: Colors.black)),
+                                  DropdownButton<String>(
+                                    hint: Text('Feeding Schedule'),
+                                    value: provider.feedingSchedule,
+                                    items: [
+                                      'Once a day',
+                                      'Twice a day',
+                                      'Thrice a day',
+                                    ].map((String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                    onChanged: (String? newValue) {
+                                      provider.setFeedingSchedule(newValue!);
+                                    },
+                                  ),
+                                ],
                               ),
                               SizedBox(height: 20),
                               Center(
-                                child: CustomTextButton(
-                                  onPressed: () {
-                                    provider.registerPet(context);
-                                  },
-                                  text: 'Register Pet',
-                                  backgroundColor: LightColors.primaryDarkColor,
-                                  textColor: LightColors.textColor,
-                                  fontSize: 15,
-                                  width: 150,
-                                ),
+                                child: provider.isLoading
+                                    ? CircularProgressIndicator()
+                                    : CustomTextButton(
+                                        onPressed: () async {
+                                          await provider.registerPet(context);
+                                        },
+                                        text: 'Register Pet',
+                                        backgroundColor:
+                                            LightColors.primaryDarkColor,
+                                        textColor: LightColors.textColor,
+                                        fontSize: 15,
+                                        width: 150,
+                                      ),
                               ),
                             ],
                           ),

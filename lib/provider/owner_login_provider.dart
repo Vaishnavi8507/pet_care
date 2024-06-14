@@ -1,19 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pet_care/constants/snackbar.dart';
 import 'package:pet_care/provider/get_ownerData_provider.dart';
 import 'package:pet_care/provider/get_petData_provider.dart';
+import 'package:pet_care/services/auth_service.dart/owner_authservice.dart';
 import 'package:pet_care/shared_pref_service.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:pet_care/constants/snackbar.dart';
-import 'package:pet_care/services/auth_service.dart/owner_authservice.dart';
 
 class OwnerLoginProvider extends ChangeNotifier {
   String _ownerEmail = '';
   String _ownerPassword = '';
   bool _isOwnerPasswordVisible = false;
   bool _isOwnerLoggedIn = false;
+
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
 
   String get ownerEmail => _ownerEmail;
   String get ownerPassword => _ownerPassword;
@@ -40,13 +42,19 @@ class OwnerLoginProvider extends ChangeNotifier {
   }
 
   Future<void> ownerLogin(BuildContext context) async {
+    if (_isLoading) return; // Return if already loading
+
+    setLoading(true);
+
     if (_ownerEmail.isEmpty || _ownerPassword.isEmpty) {
+      setLoading(false);
       showSnackBar(context, "All fields are required!");
       print("All fields are required!");
       return;
     }
 
     if (_ownerPassword.length < 8) {
+      setLoading(false);
       showSnackBar(context, "Password should be at least 8 characters");
       print("Password should be at least 8 characters");
       return;
@@ -54,50 +62,56 @@ class OwnerLoginProvider extends ChangeNotifier {
 
     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     if (!emailRegex.hasMatch(_ownerEmail)) {
+      setLoading(false);
       showSnackBar(context, "Email should be in correct format!");
       print("Email should be in correct format!");
       return;
     }
 
-    User? user = await _authService.signIn(_ownerEmail, _ownerPassword);
+    try {
+      User? user = await _authService.signIn(_ownerEmail, _ownerPassword);
 
-    if (user != null) {
-      DocumentSnapshot userDoc = await _firestore
-          .collection('users')
-          .doc('pet_owners')
-          .collection('pet_owners')
-          .doc(user.uid)
-          .get();
+      if (user != null) {
+        DocumentSnapshot userDoc = await _firestore
+            .collection('users')
+            .doc('pet_owners')
+            .collection('pet_owners')
+            .doc(user.uid)
+            .get();
 
-      print(userDoc);
+        print(userDoc);
 
-      if (userDoc.exists && userDoc['role'] == 'owner') {
-        await _prefsService.setBool('isOwnerLoggedIn', true);
-        _isOwnerLoggedIn = true;
-        notifyListeners();
-        print("Shared Value is $_isOwnerLoggedIn");
-        print('User signed in successfully');
+        if (userDoc.exists && userDoc['role'] == 'owner') {
+          await _prefsService.setBool('isOwnerLoggedIn', true);
+          _isOwnerLoggedIn = true;
+          notifyListeners();
+          print("Shared Value is $_isOwnerLoggedIn");
+          print('User signed in successfully');
 
-        final petsDetailsProvider =
-            Provider.of<PetsDetailsGetterProvider>(context, listen: false);
-        await petsDetailsProvider.loadPets();
+          final petsDetailsProvider =
+              Provider.of<PetsDetailsGetterProvider>(context, listen: false);
+          await petsDetailsProvider.loadPets();
 
-    Provider.of<OwnerDetailsGetterProvider>(context, listen: false).loadUserProfile();
+          Provider.of<OwnerDetailsGetterProvider>(context, listen: false)
+              .loadUserProfile();
 
-        //  final ownerDetailsProvider =
-        //     Provider.of<OwnerDetailsGetterProvider>(context, listen: false);
-        // await ownerDetailsProvider.loadUserProfile();
-        navigateToOwnerDashboard(context);
-        showSnackBar(context, "Sign in successful!");
-        print("Shared Value is $_isOwnerLoggedIn");
+          navigateToOwnerDashboard(context);
+          showSnackBar(context, "Sign in successful!");
+          print("Shared Value is $_isOwnerLoggedIn");
+        } else {
+          showSnackBar(context, "You are not authorized to log in as an owner");
+          print('You are not authorized to log in as an owner');
+          await FirebaseAuth.instance.signOut();
+        }
       } else {
-        showSnackBar(context, "You are not authorized to log in as an owner");
-        print('You are not authorized to log in as an owner');
-        await FirebaseAuth.instance.signOut();
+        showSnackBar(context, "Login Failed!");
+        print('Login failed');
       }
-    } else {
-      showSnackBar(context, "Login Failed!");
-      print('Login failed');
+    } catch (e) {
+      print("Error logging in: $e");
+      showSnackBar(context, "Error logging in. Please try again later.");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -124,5 +138,10 @@ class OwnerLoginProvider extends ChangeNotifier {
 
   void navigateToSplashScreen(BuildContext context) {
     Navigator.pushNamed(context, '/splashScreen');
+  }
+
+  void setLoading(bool loading) {
+    _isLoading = loading;
+    notifyListeners();
   }
 }

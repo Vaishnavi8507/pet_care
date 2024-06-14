@@ -34,7 +34,6 @@ class FireStoreService {
     required String feedingSchedule,
     required bool canBeLeftAlone,
     required String selectedPetType,
-    //required String weight
   }) async {
     try {
       await _fireStore
@@ -47,7 +46,6 @@ class FireStoreService {
         'breed': breed,
         'age': age,
         'gender': gender,
-        // 'weight': weight,
         'imagePath': imagePath,
         'friendlyWithChildren': friendlyWithChildren,
         'friendlyWithOtherPets': friendlyWithOtherPets,
@@ -63,21 +61,32 @@ class FireStoreService {
     }
   }
 
-Future<List<Map<String, dynamic>>> getPets(String ownerEmail) async {
-  try {
-    QuerySnapshot query = await _fireStore
-        .collection('pets')
-        .doc(ownerEmail) // Use ownerEmail here instead of 'ownerEmail' as a string
-        .collection('pets')
-        .get();
+  Future<List<Map<String, dynamic>>> getPets(String ownerEmail) async {
+    try {
+      QuerySnapshot query = await _fireStore
+          .collection('pets')
+          .doc(ownerEmail)
+          .collection('pets')
+          .get();
 
-    return query.docs
-        .map((doc) => doc.data() as Map<String, dynamic>)
-        .toList();
-  } catch (e) {
-    print('Error fetching pets! : $e');
-    return [];
+      return query.docs
+          .map((doc) => doc.data() as Map<String, dynamic>)
+          .toList();
+    } catch (e) {
+      print('Error fetching pets! : $e');
+      return [];
+    }
   }
-}
 
+  Future<void> addPet(String ownerEmail, Map<String, dynamic> petData) async {
+    try {
+      await _fireStore
+          .collection('pets')
+          .doc(ownerEmail)
+          .collection('pets')
+          .add(petData);
+    } catch (e) {
+      print('Error adding pet: $e');
+    }
+  }
 }

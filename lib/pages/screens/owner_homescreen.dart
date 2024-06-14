@@ -3,11 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pet_care/constants/theme/light_colors.dart';
 import 'package:pet_care/pages/screens/reminder_screen.dart';
-import 'package:pet_care/provider/reminder_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:pet_care/provider/get_ownerData_provider.dart';
 import 'package:pet_care/provider/get_petData_provider.dart';
 import 'package:pet_care/provider/owner_dashboard_provider.dart';
+import 'package:pet_care/provider/reminder_provider.dart';
+import 'package:provider/provider.dart';
 
 class OwnerDashboard extends StatelessWidget {
   @override
@@ -50,29 +49,38 @@ class OwnerDashboard extends StatelessWidget {
                 Expanded(
                   child: SizedBox(
                     height: 60,
-                    child: petsDetailsProvider.isDataLoaded
-                        ? ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: petsDetailsProvider.pets.length,
-                            itemBuilder: (context, index) {
-                              final pet = petsDetailsProvider.pets[index];
-                              return GestureDetector(
-                                onTap: () {
-                                  ownerDashboardProvider.selectPetIndex(index);
+                    child: Consumer<PetsDetailsGetterProvider>(
+                      builder: (context, petsDetailsProvider, child) {
+                        return petsDetailsProvider.isDataLoaded
+                            ? ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: petsDetailsProvider.pets.length,
+                                itemBuilder: (context, index) {
+                                  final pet = petsDetailsProvider.pets[index];
+                                  return GestureDetector(
+                                    onTap: () {
+                                      ownerDashboardProvider
+                                          .selectPetIndex(index);
+                                    },
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 8.0),
+                                      child: CircleAvatar(
+                                        radius: 30,
+                                        backgroundImage: pet['imagePath'] !=
+                                                null
+                                            ? FileImage(File(pet['imagePath']))
+                                            : AssetImage(
+                                                    'assets/images/cat.png')
+                                                as ImageProvider<Object>,
+                                      ),
+                                    ),
+                                  );
                                 },
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 8.0),
-                                  child: CircleAvatar(
-                                    radius: 30,
-                                    backgroundImage: pet['imagePath'] != null
-                                        ? FileImage(File(pet['imagePath']))
-                                        : AssetImage('assets/default_profile.png') as ImageProvider<Object>,
-                                  ),
-                                ),
-                              );
-                            },
-                          )
-                        : Center(child: CircularProgressIndicator()),
+                              )
+                            : Center(child: CircularProgressIndicator());
+                      },
+                    ),
                   ),
                 ),
                 CircleAvatar(
@@ -80,8 +88,12 @@ class OwnerDashboard extends StatelessWidget {
                   radius: 30,
                   child: IconButton(
                     icon: Icon(Icons.add),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/pets');
+                    onPressed: () async {
+                      // Navigate to the page to register a new pet
+                      await Navigator.pushNamed(context, '/pets');
+
+                      // After returning, update the pet data
+                      await petsDetailsProvider.loadPets();
                     },
                   ),
                 ),
@@ -97,12 +109,12 @@ class OwnerDashboard extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10),
-            Consumer<PetsDetailsGetterProvider>(
-              builder: (context, petsDetailsProvider, child) {
+            Consumer<OwnerDashboardProvider>(
+              builder: (context, ownerDashboardProvider, child) {
                 if (petsDetailsProvider.isDataLoaded &&
                     petsDetailsProvider.pets.isNotEmpty) {
-                  final pet =
-                      petsDetailsProvider.pets[ownerDashboardProvider.selectedPetIndex];
+                  final pet = petsDetailsProvider
+                      .pets[ownerDashboardProvider.selectedPetIndex];
 
                   return Container(
                     padding: EdgeInsets.all(10),
@@ -117,7 +129,8 @@ class OwnerDashboard extends StatelessWidget {
                           radius: 40,
                           backgroundImage: pet['imagePath'] != null
                               ? FileImage(File(pet['imagePath']))
-                              : AssetImage('assets/images/default_profile.png') as ImageProvider<Object>,
+                              : AssetImage('assets/images/cat.png')
+                                  as ImageProvider<Object>,
                         ),
                         SizedBox(width: 20),
                         Expanded(
@@ -126,15 +139,18 @@ class OwnerDashboard extends StatelessWidget {
                             children: [
                               Text(
                                 'Name: ${pet['petName']}',
-                                style: TextStyle(fontSize: 18, color: Colors.black),
+                                style: TextStyle(
+                                    fontSize: 18, color: Colors.black),
                               ),
                               Text(
                                 'Breed: ${pet['breed']}',
-                                style: TextStyle(fontSize: 18, color: Colors.black),
+                                style: TextStyle(
+                                    fontSize: 18, color: Colors.black),
                               ),
                               Text(
                                 'Age: ${pet['age']}',
-                                style: TextStyle(fontSize: 18, color: Colors.black),
+                                style: TextStyle(
+                                    fontSize: 18, color: Colors.black),
                               ),
                             ],
                           ),
@@ -186,7 +202,8 @@ class OwnerDashboard extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => ChangeNotifierProvider(
+                                    builder: (context) =>
+                                        ChangeNotifierProvider(
                                       create: (_) => ReminderProvider(),
                                       child: ReminderScreen(),
                                     ),
@@ -308,12 +325,6 @@ class OwnerDashboard extends StatelessWidget {
   }
 }
 
-
-
 class NavigationProvider extends ChangeNotifier {
-  void navigateToPetsPage() {
-    // Navigate to pets page logic here
-    // For example:
-    // Navigator.pushNamed(context, '/petsPage');
-  }
+  void navigateToPetsPage() {}
 }
