@@ -30,4 +30,34 @@ class FireStoreService {
       print("Error saving User Details $e");
     }
   }
+
+  Future<void> updateProfileImage(
+      {required String userId, required String imageUrl}) async {
+    try {
+      await _firestore
+          .collection('users')
+          .doc('pet_owners')
+          .collection('pet_owners')
+          .doc(userId)
+          .update({'profileImageUrl': imageUrl});
+    } catch (e) {
+      print("Error updating profile image $e");
+    }
+  }
+
+  Future<Map<String, dynamic>?> getUserDetails(String userId) async {
+    try {
+      DocumentSnapshot userDoc = await _firestore
+          .collection('users')
+          .doc('pet_owners')
+          .collection('pet_owners')
+          .doc(userId)
+          .get();
+
+      return userDoc.data() as Map<String, dynamic>?;
+    } catch (e) {
+      print("Error getting user details $e");
+      return null;
+    }
+  }
 }

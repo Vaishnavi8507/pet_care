@@ -62,4 +62,22 @@ class FireStoreService {
       print('Error saving pet details: $e');
     }
   }
+
+Future<List<Map<String, dynamic>>> getPets(String ownerEmail) async {
+  try {
+    QuerySnapshot query = await _fireStore
+        .collection('pets')
+        .doc(ownerEmail) // Use ownerEmail here instead of 'ownerEmail' as a string
+        .collection('pets')
+        .get();
+
+    return query.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
+  } catch (e) {
+    print('Error fetching pets! : $e');
+    return [];
+  }
+}
+
 }

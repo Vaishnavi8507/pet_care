@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pet_care/provider/get_ownerData_provider.dart';
+import 'package:pet_care/provider/get_petData_provider.dart';
 import 'package:pet_care/shared_pref_service.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pet_care/constants/snackbar.dart';
 import 'package:pet_care/services/auth_service.dart/owner_authservice.dart';
- 
+
 class OwnerLoginProvider extends ChangeNotifier {
   String _ownerEmail = '';
   String _ownerPassword = '';
@@ -66,16 +69,27 @@ class OwnerLoginProvider extends ChangeNotifier {
           .doc(user.uid)
           .get();
 
+      print(userDoc);
+
       if (userDoc.exists && userDoc['role'] == 'owner') {
         await _prefsService.setBool('isOwnerLoggedIn', true);
         _isOwnerLoggedIn = true;
         notifyListeners();
         print("Shared Value is $_isOwnerLoggedIn");
         print('User signed in successfully');
+
+        final petsDetailsProvider =
+            Provider.of<PetsDetailsGetterProvider>(context, listen: false);
+        await petsDetailsProvider.loadPets();
+
+    Provider.of<OwnerDetailsGetterProvider>(context, listen: false).loadUserProfile();
+
+        //  final ownerDetailsProvider =
+        //     Provider.of<OwnerDetailsGetterProvider>(context, listen: false);
+        // await ownerDetailsProvider.loadUserProfile();
         navigateToOwnerDashboard(context);
         showSnackBar(context, "Sign in successful!");
-                print("Shared Value is $_isOwnerLoggedIn");
-
+        print("Shared Value is $_isOwnerLoggedIn");
       } else {
         showSnackBar(context, "You are not authorized to log in as an owner");
         print('You are not authorized to log in as an owner');

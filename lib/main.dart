@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pet_care/constants/theme/theme_provider.dart';
 import 'package:pet_care/firebase_options.dart';
 import 'package:pet_care/initial_screen.dart';
+import 'package:pet_care/pages/owner&pet/owner_editprofile.dart';
 import 'package:pet_care/pages/owner&pet/owner_login.dart';
 import 'package:pet_care/pages/owner&pet/owner_signup.dart';
 import 'package:pet_care/pages/owner&pet/pet_register.dart';
@@ -14,6 +15,10 @@ import 'package:pet_care/pages/volunteer/volunteer_login_page.dart';
 import 'package:pet_care/pages/volunteer/volunteer_reg.dart';
 import 'package:pet_care/pages/volunteer/volunter_reg2.dart';
 import 'package:pet_care/provider/forgot_password_provider.dart';
+import 'package:pet_care/provider/get_ownerData_provider.dart';
+import 'package:pet_care/provider/get_petData_provider.dart';
+import 'package:pet_care/provider/owner_dashboard_provider.dart';
+import 'package:pet_care/provider/owner_editprofile_provider.dart';
 import 'package:pet_care/provider/owner_login_provider.dart';
 import 'package:pet_care/provider/owner_reg_provider.dart';
 import 'package:pet_care/provider/pet_reg_provider.dart';
@@ -37,6 +42,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => OwnerRegistrationProvider()),
+
         ChangeNotifierProvider(create: (context) => OwnerLoginProvider()),
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
         ChangeNotifierProvider(create: (context) => RegisterProvider()),
@@ -45,6 +51,14 @@ void main() async {
         ChangeNotifierProvider(create: (context) => VolunteerRegistrationProvider()),
         ChangeNotifierProvider(create: (context) => VolunteerLoginProvider()),
         ChangeNotifierProvider(create: (context) => ForgotPasswordProvider()),
+      //  ChangeNotifierProvider(create:  (context) =>OwnerEditProfileProvider()),
+        ChangeNotifierProvider(create: (context)=> PetsDetailsGetterProvider()),
+        ChangeNotifierProvider(create: (context) => OwnerDetailsGetterProvider()),
+
+       // ChangeNotifierProvider(create: (context) =>OwnerDetailsGetterProvider()),
+        ChangeNotifierProvider(create: (context)=> OwnerDashboardProvider()),
+        ChangeNotifierProvider(create: (context) => OwnerEditProfileProvider()),
+
       ],
       child: MyApp(),
     ),
@@ -74,6 +88,7 @@ class MyApp extends StatelessWidget {
         '/ownerHomeScreen': (context) => OwnerDashboard(),
         '/volunteerHomeScreen': (context) => VolunteerDashboard(),
         '/petRegistration2': (context) => PetRegistration2(),
+        '/ownerEditProfile':(context) => OwnerEditProfilePage()
       },
     );
   }
