@@ -4,7 +4,7 @@ class FireStoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<void> saveVolunteerDetails({
-   required String userId,
+    required String userId,
     required String name,
     required String email,
     required String phoneNo,
@@ -20,7 +20,6 @@ class FireStoreService {
     required bool providesDogWalking,
     required bool providesHouseSitting,
     required String role,
-
   }) async {
     try {
       await _firestore
@@ -30,26 +29,38 @@ class FireStoreService {
           .doc(userId)
           .set({
         'name': name,
-      'email': email,
-      'phoneNo': phoneNo,
-      'age': age,
-      'occupation': occupation,
-      'aboutMe': aboutMe,
-      'prefersCat': prefersCat,
-      'prefersDog': prefersDog,
-      'prefersBird': prefersBird,
-      'prefersRabbit': prefersRabbit,
-      'prefersOthers': prefersOthers,
-      'providesHomeVisits': providesHomeVisits,
-      'providesDogWalking': providesDogWalking,
-      'providesHouseSitting': providesHouseSitting,
-      'role': role,
-
+        'email': email,
+        'phoneNo': phoneNo,
+        'age': age,
+        'occupation': occupation,
+        'aboutMe': aboutMe,
+        'prefersCat': prefersCat,
+        'prefersDog': prefersDog,
+        'prefersBird': prefersBird,
+        'prefersRabbit': prefersRabbit,
+        'prefersOthers': prefersOthers,
+        'providesHomeVisits': providesHomeVisits,
+        'providesDogWalking': providesDogWalking,
+        'providesHouseSitting': providesHouseSitting,
+        'role': role,
       });
     } catch (e) {
       print("Error saving User Details $e");
     }
   }
 
-  
+  Future<Map<String, dynamic>?> getVolunteerDetails(String userId) async {
+    try {
+      DocumentSnapshot userDoc = await _firestore
+          .collection('users')
+          .doc('volunteers')
+          .collection('volunteers')
+          .doc(userId)
+          .get();
+      return userDoc.data() as Map<String, dynamic>?;
+    } catch (e) {
+      print("Error getting user details $e");
+      return null;
+    }
+  }
 }

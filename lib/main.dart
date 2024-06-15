@@ -46,14 +46,16 @@ void main() async {
         ChangeNotifierProvider(create: (context) => OwnerLoginProvider()),
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
         ChangeNotifierProvider(create: (context) => RegisterProvider()),
-        ChangeNotifierProvider(create: (context) => PetsProvider()),
-        ChangeNotifierProvider(create: (context) => PetRegistrationProvider()),
+       
         ChangeNotifierProvider(create: (context) => VolunteerRegistrationProvider()),
         ChangeNotifierProvider(create: (context) => VolunteerLoginProvider()),
         ChangeNotifierProvider(create: (context) => ForgotPasswordProvider()),
       //  ChangeNotifierProvider(create:  (context) =>OwnerEditProfileProvider()),
-        ChangeNotifierProvider(create: (context)=> PetsDetailsGetterProvider()),
         ChangeNotifierProvider(create: (context) => OwnerDetailsGetterProvider()),
+         ChangeNotifierProvider(create: (context) => PetsProvider()),
+        ChangeNotifierProvider(create: (context) => PetRegistrationProvider()),
+        ChangeNotifierProvider(create: (context)=> PetsDetailsGetterProvider()),
+
 
        // ChangeNotifierProvider(create: (context) =>OwnerDetailsGetterProvider()),
         ChangeNotifierProvider(create: (context)=> OwnerDashboardProvider()),

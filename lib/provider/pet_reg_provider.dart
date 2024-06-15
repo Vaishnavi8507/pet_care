@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pet_care/constants/snackbar.dart';
+import 'package:pet_care/provider/get_ownerData_provider.dart';
+import 'package:pet_care/provider/get_petData_provider.dart';
 import 'package:pet_care/provider/owner_reg_provider.dart';
 import 'package:pet_care/provider/pets_provider.dart';
 import 'package:pet_care/services/firestore_service/pet_register.dart';
@@ -119,10 +121,12 @@ class PetRegistrationProvider with ChangeNotifier {
 
   Future<void> registerPet(BuildContext context) async {
     setLoading(true);
-    final selectedPetType =
-        Provider.of<PetsProvider>(context, listen: false).selectedPetType;
-    final ownerEmail =
-        Provider.of<OwnerRegistrationProvider>(context, listen: false).email;
+  Provider.of<OwnerDetailsGetterProvider>(context,listen: false).loadUserProfile();
+  final ownerEmail = Provider.of<OwnerDetailsGetterProvider>(context, listen: false).email;
+final selectedPetType = Provider.of<PetsProvider>(context, listen: false).selectedPetType;
+
+print('Owner Email: $ownerEmail');
+print('Selected Pet Type: $selectedPetType');
 
     if (_petName != null &&
         _breed != null &&
@@ -161,8 +165,13 @@ class PetRegistrationProvider with ChangeNotifier {
           selectedPetType: selectedPetType ?? '',
         );
 
+         final petsDetailsProvider =
+          Provider.of<PetsDetailsGetterProvider>(context, listen: false);
+      await petsDetailsProvider.loadPets();
+
         showSnackBar(context, "Pet Registration Successful");
         navigateToOwnerDashboard(context);
+         
       } catch (e) {
         showSnackBar(context, "Error! Something went wrong!");
         print(

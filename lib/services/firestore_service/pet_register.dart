@@ -3,21 +3,27 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class FireStoreService {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
-  Future<bool> isPetNameDuplicate(String ownerEmail, String petName) async {
-    try {
-      QuerySnapshot query = await _fireStore
-          .collection('pets')
-          .doc(ownerEmail)
-          .collection('pets')
-          .where('petName', isEqualTo: petName)
-          .get();
-
-      return query.docs.isNotEmpty;
-    } catch (e) {
-      print('Error checking for duplicate pet name: $e');
-      return false;
-    }
+ Future<bool> isPetNameDuplicate(String ownerEmail, String petName) async {
+  if (ownerEmail.isEmpty) {
+    print('Error: ownerEmail is empty');
+    return false;
   }
+  
+  try {
+    QuerySnapshot query = await _fireStore
+        .collection('pets')
+        .doc(ownerEmail)
+        .collection('pets')
+        .where('petName', isEqualTo: petName)
+        .get();
+
+    return query.docs.isNotEmpty;
+  } catch (e) {
+    print('Error checking for duplicate pet name: $e');
+    return false;
+  }
+}
+
 
   Future<void> savePetDetails({
     required String ownerEmail,

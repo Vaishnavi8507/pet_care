@@ -95,6 +95,8 @@ class OwnerLoginProvider extends ChangeNotifier {
           Provider.of<OwnerDetailsGetterProvider>(context, listen: false)
               .loadUserProfile();
 
+          print('email at sign in is : ' + userDoc['email']);
+
           navigateToOwnerDashboard(context);
           showSnackBar(context, "Sign in successful!");
           print("Shared Value is $_isOwnerLoggedIn");
