@@ -21,6 +21,9 @@ class FireStoreService {
     required bool providesHouseSitting,
     required String role,
     String? profileImageUrl,
+    String? locationCity,
+    int? minPrice, 
+    int? maxPrice,
     
   }) async {
     try {
@@ -46,6 +49,9 @@ class FireStoreService {
         'providesHouseSitting': providesHouseSitting,
         'role': role,
         'profileImageUrl': profileImageUrl,
+          'minPrice': minPrice, 
+        'maxPrice': maxPrice, 
+        'locationCity' :locationCity
 
          
       });
@@ -85,4 +91,58 @@ Future<void> updateVolunteerProfileImage(
       return null;
     }
   }
+
+
+  Future<List<Map<String, dynamic>>> getAllVolunteers() async {
+    try {
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('users')
+          .doc('volunteers')
+          .collection('volunteers')
+          .get();
+      return querySnapshot.docs
+          .map((doc) => doc.data() as Map<String, dynamic>)
+          .toList();
+    } catch (e) {
+      print("Error getting all volunteers $e");
+      return [];
+    }
+  }
+
+
+  Future<List<Map<String, dynamic>>> getAllVolunteersAsc() async {
+    try {
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('users')
+          .doc('volunteers')
+          .collection('volunteers')
+            .orderBy('minPrice', descending: false)  // Sorting by minPrice in ascending order
+          .get();
+      return querySnapshot.docs
+          .map((doc) => doc.data() as Map<String, dynamic>)
+          .toList();
+    } catch (e) {
+      print("Error getting all volunteers $e");
+      return [];
+    }
+  }
+
+    Future<List<Map<String, dynamic>>> getAllVolunteersDsc() async {
+    try {
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('users')
+          .doc('volunteers')
+          .collection('volunteers')
+            .orderBy('minPrice', descending: true)  // Sorting by minPrice in ascending order
+          .get();
+      return querySnapshot.docs
+          .map((doc) => doc.data() as Map<String, dynamic>)
+          .toList();
+    } catch (e) {
+      print("Error getting all volunteers $e");
+      return [];
+    }
+  }
+
+
 }

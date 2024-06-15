@@ -14,6 +14,7 @@ class OwnerReg extends StatelessWidget {
   final _phoneNoController = TextEditingController();
   final _ageController = TextEditingController();
   final _occupationController = TextEditingController();
+  final _locationController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -120,6 +121,16 @@ class OwnerReg extends StatelessWidget {
                               textStyle: TextStyle(color: Colors.black),
                               fillColor: Colors.white,
                             ),
+                            MyTextField(
+                              hintText: 'City (Optional)',
+                              obsText: false,
+                              controller: _locationController,
+                              margin: EdgeInsets.only(bottom: 20),
+                              padding: EdgeInsets.zero,
+                              prefixIcon: Icon(Icons.location_city_outlined),
+                              textStyle: TextStyle(color: Colors.black),
+                              fillColor: Colors.white,
+                            ),
                             SizedBox(height: 5),
                             provider.isLoading
                                 ? CircularProgressIndicator()
@@ -134,7 +145,8 @@ class OwnerReg extends StatelessWidget {
                                       provider.setAge(_ageController.text);
                                       provider.setOccupation(
                                           _occupationController.text);
-
+                                      provider.setLocationCity(
+                                          _locationController.text);
                                       await provider.signUp(context);
                                     },
                                     text: 'Sign Up',

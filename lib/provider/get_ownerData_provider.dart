@@ -22,6 +22,7 @@ class OwnerDetailsGetterProvider extends ChangeNotifier {
   String? _occupation;
   bool _isDataLoaded = false;
   File? _profileImageFile;
+  String? _locationCity;
 
   bool get isDataLoaded => _isDataLoaded;
   String get name => _name;
@@ -31,6 +32,7 @@ class OwnerDetailsGetterProvider extends ChangeNotifier {
   String? get age => _age;
   String? get occupation => _occupation;
   File? get profileImageFile => _profileImageFile;
+  String? get locationCity => _locationCity;
 
   OwnerDetailsGetterProvider() {
     loadUserProfile();
@@ -49,6 +51,7 @@ class OwnerDetailsGetterProvider extends ChangeNotifier {
           _profileImageUrl = userDetails['profileImageUrl'];
           _age = userDetails['age'];
           _occupation = userDetails['occupation'];
+          _locationCity = userDetails['locationCity'];
           _isDataLoaded = true; // Set data loaded to true
           notifyListeners();
         }
@@ -66,6 +69,7 @@ class OwnerDetailsGetterProvider extends ChangeNotifier {
     _age = null;
     _occupation = null;
     _isDataLoaded = false;
+    _locationCity = '';
     notifyListeners();
   }
 
@@ -104,6 +108,7 @@ class OwnerDetailsGetterProvider extends ChangeNotifier {
             phoneNo: _phoneNo,
             age: _age ?? '',
             occupation: _occupation ?? '',
+            locationCity: _locationCity ?? '',
             role: 'owner');
 
         showSnackBar(context, "Profile details saved successfully!");

@@ -14,6 +14,7 @@ class VolunteerReg extends StatelessWidget {
   final _volunteerPhoneNoController = TextEditingController();
   final _volunteerAgeController = TextEditingController();
   final _volunteerOccupationController = TextEditingController();
+  final __volunteerCityController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -118,6 +119,16 @@ class VolunteerReg extends StatelessWidget {
                               textStyle: TextStyle(color: Colors.black),
                               fillColor: Colors.white,
                             ),
+                            MyTextField(
+                              hintText: 'City (Optional)',
+                              obsText: false,
+                              controller: __volunteerCityController,
+                              margin: EdgeInsets.only(bottom: 20),
+                              padding: EdgeInsets.zero,
+                              prefixIcon: Icon(Icons.location_city_outlined),
+                              textStyle: TextStyle(color: Colors.black),
+                              fillColor: Colors.white,
+                            ),
                             SizedBox(height: 5),
                             CustomTextButton(
                               onPressed: () {
@@ -133,6 +144,8 @@ class VolunteerReg extends StatelessWidget {
                                     _volunteerAgeController.text);
                                 provider.setVolunteerOccupation(
                                     _volunteerOccupationController.text);
+                                provider.setLocationCity(
+                                    __volunteerCityController.text);
                                 provider.navigateToVolunteerReg2(context);
                               },
                               text: 'Next',

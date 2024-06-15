@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -23,6 +24,18 @@ class VolunteerDetailsGetterProvider extends ChangeNotifier {
   String? _imageUrl;
   String? _age;
   String? _occupation;
+  int? _minPrice;
+  int? _maxPrice;
+
+  bool _preferCat = false;
+  bool _preferDog = false;
+  bool _preferBird = false;
+  bool _prefersRabbit = false;
+  bool _prefersOthers = false;
+  bool _providesHomeVisits = false;
+  bool _provideDogWalking = false;
+  bool _providesHouseSitting = false;
+  String? _locationCity;
 
   bool get isDataLoaded => _isDataLoaded;
   String get name => _name;
@@ -34,6 +47,9 @@ class VolunteerDetailsGetterProvider extends ChangeNotifier {
   String? get imageUrl => _imageUrl;
   String? get age => _age;
   String? get occupation => _occupation;
+  int? get minPrice => _minPrice;
+  int? get maxPrice => _maxPrice;
+  String? get locationCity => _locationCity;
 
   VolunteerDetailsGetterProvider() {
     loadVolunteerDetails();
@@ -53,6 +69,20 @@ class VolunteerDetailsGetterProvider extends ChangeNotifier {
         _age = volunteerData?['age'];
         _occupation = volunteerData?['occupation'];
 
+        _preferCat = volunteerData?['prefersCat'] ?? false;
+        _preferDog = volunteerData?['prefersDog'] ?? false;
+        _preferBird = volunteerData?['prefersBird'] ?? false;
+        _prefersRabbit = volunteerData?['prefersRabbit'] ?? false;
+        _prefersOthers = volunteerData?['prefersOthers'] ?? false;
+        _providesHomeVisits = volunteerData?['providesHomeVisits'] ?? false;
+        _provideDogWalking = volunteerData?['providesDogWalking'] ?? false;
+        _providesHouseSitting = volunteerData?['providesHouseSitting'] ?? false;
+
+        _minPrice = volunteerData?['minPrice'];
+        _maxPrice = volunteerData?['maxPrice'];
+
+        _locationCity = volunteerData?['locationCity'];
+
         _isDataLoaded = true;
         notifyListeners();
       } catch (e) {
@@ -61,6 +91,18 @@ class VolunteerDetailsGetterProvider extends ChangeNotifier {
     } else {
       print("No user logged in.");
     }
+  }
+
+  void setMinPrice(int minPrice) {
+    _minPrice = minPrice;
+    notifyListeners();
+    print(_minPrice);
+  }
+
+  void setMaxPrice(int maxPrice) {
+    _maxPrice = maxPrice;
+    notifyListeners();
+    print(_maxPrice);
   }
 
   void setPhoneNo(String phoneNo) {
@@ -105,26 +147,35 @@ class VolunteerDetailsGetterProvider extends ChangeNotifier {
         final volunteerData =
             await _fireStoreService.getVolunteerDetails(user.uid);
 
+        if (_minPrice != null && _maxPrice != null && _maxPrice! < _minPrice!) {
+          showSnackBar(context, "Max price can't be less than min price!");
+          return;
+        }
+
         await _fireStoreService.saveVolunteerDetails(
-          userId: user.uid,
-          name: volunteerData?['name'] ?? '',
-          email: volunteerData?['email'] ?? '',
-          phoneNo: _phoneNo,
-          age: volunteerData?['age'] ?? '', // Add age here if needed
-          occupation: volunteerData?['occupation'] ??
-              '', // Add occupation here if needed
-          aboutMe: _aboutMe,
-          prefersCat: false, // Add other preferences here if needed
-          prefersDog: false,
-          prefersBird: false,
-          prefersRabbit: false,
-          prefersOthers: false,
-          providesHomeVisits: false,
-          providesDogWalking: false,
-          providesHouseSitting: false,
-          role: 'volunteer',
-          profileImageUrl: _imageUrl, // Save the profile image URL
-        );
+            userId: user.uid,
+            name: volunteerData?['name'] ?? '',
+            email: volunteerData?['email'] ?? '',
+            phoneNo: _phoneNo,
+            age: volunteerData?['age'] ?? '', // Add age here if needed
+            occupation: volunteerData?['occupation'] ?? '',
+            aboutMe: _aboutMe,
+            prefersCat: _preferCat,
+            prefersDog: _preferDog,
+            prefersBird: _preferBird,
+            prefersRabbit: _prefersRabbit,
+            prefersOthers: _prefersOthers,
+            providesHomeVisits: _providesHomeVisits,
+            providesDogWalking: _provideDogWalking,
+            providesHouseSitting: _providesHouseSitting,
+            role: 'volunteer',
+            profileImageUrl: _imageUrl,
+            minPrice: _minPrice,
+            maxPrice: _maxPrice,
+            locationCity: _locationCity
+
+            // Save the profile image URL
+            );
 
         showSnackBar(context, "Profile details saved successfully!");
       } catch (e) {
@@ -152,9 +203,11 @@ class VolunteerDetailsGetterProvider extends ChangeNotifier {
     _name = '';
     _email = '';
     _phoneNo = '';
-    _profileImageUrl = null;
     _aboutMe = '';
-    _profileImageUrl = '';
+    _imageUrl = '';
+    _minPrice = null;
+    _maxPrice = null;
+    _locationCity = '';
     notifyListeners();
   }
 

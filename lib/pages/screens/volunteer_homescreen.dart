@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pet_care/provider/get_volunteer_details.dart';
+import 'package:pet_care/provider/get_volunteer_details_provider.dart';
 import 'package:provider/provider.dart';
 
 class VolunteerDashboard extends StatelessWidget {

@@ -236,7 +236,8 @@ class OwnerDashboard extends StatelessWidget {
                               icon: Image.asset('assets/icons/pet-care.png',
                                   width: 30, height: 30),
                               onPressed: () {
-                                // Add your onPressed logic here
+
+                                Navigator.pushNamed(context, '/petSitters');
                               },
                             ),
                           ),

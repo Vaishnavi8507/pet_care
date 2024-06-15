@@ -11,6 +11,7 @@ class FireStoreService {
     required String age,
     required String occupation,
     required String role,
+    String? locationCity
   }) async {
     try {
       await _firestore
@@ -25,6 +26,7 @@ class FireStoreService {
         'age': age,
         'occupation': occupation,
         'role': role,
+        'locationCity' : locationCity
       });
     } catch (e) {
       print("Error saving User Details $e");

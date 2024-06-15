@@ -16,11 +16,13 @@ class OwnerRegistrationProvider with ChangeNotifier {
   String _occupation = '';
   bool _isPasswordVisible = false;
   bool _isOwnerLoggedIn = false;
+  String _locationCity = '';
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
   final String _role = 'owner';
+  String get locationCity => _locationCity;
 
   final AuthService _authService = AuthService();
   final FireStoreService _fireStoreService = FireStoreService();
@@ -75,6 +77,10 @@ class OwnerRegistrationProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void setLocationCity(String locationCity) {
+    _locationCity = locationCity;
+  }
+
   Future<void> signUp(BuildContext context) async {
     if (_name.isEmpty ||
         _email.isEmpty ||
@@ -113,6 +119,7 @@ class OwnerRegistrationProvider with ChangeNotifier {
           age: age,
           occupation: occupation,
           role: _role,
+          locationCity: _locationCity
         );
 
         // Update local state after successful signup

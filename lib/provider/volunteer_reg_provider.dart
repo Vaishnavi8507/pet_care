@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pet_care/constants/snackbar.dart';
-import 'package:pet_care/provider/get_volunteer_details.dart';
+import 'package:pet_care/provider/get_volunteer_details_provider.dart';
 import 'package:pet_care/services/auth_service.dart/owner_authservice.dart';
 import 'package:pet_care/services/firestore_service/volunteer_firestore.dart';
 import 'package:pet_care/shared_pref_service.dart';
@@ -26,6 +26,7 @@ class VolunteerRegistrationProvider extends ChangeNotifier {
   bool _isVolunteerPasswordVisible = false;
 
   bool _isVolunteerLoggedIn = false;
+  String _locationCity = '';
 
   final String _volunteerRole = 'volunteer';
   final AuthService _authService = AuthService();
@@ -40,6 +41,7 @@ class VolunteerRegistrationProvider extends ChangeNotifier {
   String get volunteerAge => _volunteerAge;
   String get volunteerOccupation => _volunteerOccupation;
   String get volunteerAboutMe => _volunteerAboutMe;
+  String get locationCity => _locationCity;
   bool get prefersCat => _prefersCat;
   bool get prefersDog => _prefersDog;
   bool get prefersBird => _prefersBird;
@@ -130,6 +132,11 @@ class VolunteerRegistrationProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setLocationCity(String locationCity) {
+    _locationCity = locationCity;
+    notifyListeners();
+  }
+
   Future<void> volunteerSignUp(BuildContext context) async {
     if (_volunteerName.isEmpty ||
         _volunteerEmail.isEmpty ||
@@ -174,6 +181,7 @@ class VolunteerRegistrationProvider extends ChangeNotifier {
         providesDogWalking: providesDogWalking,
         providesHouseSitting: providesHouseSitting,
         role: _volunteerRole,
+        locationCity: _locationCity
       );
 
       await _prefsService.setBool('isVolunteerLoggedIn', true);
@@ -182,7 +190,7 @@ class VolunteerRegistrationProvider extends ChangeNotifier {
       showSnackBar(context, "Volunteer Signup Successful");
       Provider.of<VolunteerDetailsGetterProvider>(context, listen: false)
           .loadVolunteerDetails();
-          
+
       navigateToVolunteerDashboard(context);
       print('Volunteer signed up and details saved');
     } else {
