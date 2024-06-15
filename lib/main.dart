@@ -10,6 +10,7 @@ import 'package:pet_care/pages/owner&pet/pet_register.dart';
 import 'package:pet_care/pages/owner&pet/pet_register2.dart';
 import 'package:pet_care/pages/pets_page/pets.dart';
 import 'package:pet_care/pages/screens/owner_homescreen.dart';
+import 'package:pet_care/pages/screens/volunteer_editProfile.dart';
 import 'package:pet_care/pages/screens/volunteer_homescreen.dart';
 import 'package:pet_care/pages/volunteer/volunteer_login_page.dart';
 import 'package:pet_care/pages/volunteer/volunteer_reg.dart';
@@ -17,6 +18,7 @@ import 'package:pet_care/pages/volunteer/volunter_reg2.dart';
 import 'package:pet_care/provider/forgot_password_provider.dart';
 import 'package:pet_care/provider/get_ownerData_provider.dart';
 import 'package:pet_care/provider/get_petData_provider.dart';
+import 'package:pet_care/provider/get_volunteer_details.dart';
 import 'package:pet_care/provider/owner_dashboard_provider.dart';
 import 'package:pet_care/provider/owner_editprofile_provider.dart';
 import 'package:pet_care/provider/owner_login_provider.dart';
@@ -60,6 +62,7 @@ void main() async {
        // ChangeNotifierProvider(create: (context) =>OwnerDetailsGetterProvider()),
         ChangeNotifierProvider(create: (context)=> OwnerDashboardProvider()),
         ChangeNotifierProvider(create: (context) => OwnerEditProfileProvider()),
+        ChangeNotifierProvider(create: (context)=>VolunteerDetailsGetterProvider(),)
 
       ],
       child: MyApp(),
@@ -90,7 +93,8 @@ class MyApp extends StatelessWidget {
         '/ownerHomeScreen': (context) => OwnerDashboard(),
         '/volunteerHomeScreen': (context) => VolunteerDashboard(),
         '/petRegistration2': (context) => PetRegistration2(),
-        '/ownerEditProfile':(context) => OwnerEditProfilePage()
+        '/ownerEditProfile':(context) => OwnerEditProfilePage(),
+        '/volunteerEditProfile' :(context) => VolunteerEditProfilePage()
       },
     );
   }

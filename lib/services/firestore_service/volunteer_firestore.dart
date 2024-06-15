@@ -20,6 +20,8 @@ class FireStoreService {
     required bool providesDogWalking,
     required bool providesHouseSitting,
     required String role,
+    String? profileImageUrl,
+    
   }) async {
     try {
       await _firestore
@@ -43,11 +45,31 @@ class FireStoreService {
         'providesDogWalking': providesDogWalking,
         'providesHouseSitting': providesHouseSitting,
         'role': role,
+        'profileImageUrl': profileImageUrl,
+
+         
       });
     } catch (e) {
       print("Error saving User Details $e");
     }
   }
+
+
+
+Future<void> updateVolunteerProfileImage(
+    {required String userId, required String imageUrl}) async {
+  try {
+    await _firestore
+        .collection('users')
+        .doc('volunteers') // Corrected collection name
+        .collection('volunteers') // Corrected collection name
+        .doc(userId)
+        .update({'imageUrl': imageUrl});
+  } catch (e) {
+    print("Error updating profile image $e");
+  }
+}
+
 
   Future<Map<String, dynamic>?> getVolunteerDetails(String userId) async {
     try {
