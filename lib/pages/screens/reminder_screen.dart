@@ -1,4 +1,4 @@
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pet_care/widgets/components/textfield.dart';
@@ -20,7 +20,28 @@ class _ReminderScreenState extends State<ReminderScreen> {
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedTime = TimeOfDay.now();
   int selectedCategoryIndex = -1;
-  List<bool> isSelected = List.generate(9, (index) => false);
+
+  final List<String> icons = [
+    'assets/icons/walk.png',
+    'assets/icons/feed.png',
+    'assets/icons/play.png',
+    'assets/icons/sleep.png',
+    'assets/icons/vaccine.png',
+    'assets/icons/vet.png',
+    'assets/icons/timer.png',
+  ];
+
+  final List<String> labels = [
+    "Walk",
+    "Feed",
+    "Play",
+    "Sleep",
+    "Vaccine",
+    "Vet",
+    "Timer",
+  ];
+
+  List<bool> isSelected = List.generate(7, (index) => false);
 
   @override
   void initState() {
@@ -93,16 +114,56 @@ class _ReminderScreenState extends State<ReminderScreen> {
       android: androidDetails,
     );
 
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-      0,
-      'Reminder',
-      reminderText,
-      tzScheduledTime,
-      notificationDetails,
-      androidAllowWhileIdle: true,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-    );
+    try {
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        0,
+        'Reminder',
+        reminderText,
+        tzScheduledTime,
+        notificationDetails,
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+      );
+    } catch (e) {
+      print('Error scheduling notification: $e');
+      // Handle error
+    }
+  }
+
+  String formatTimestamp(DateTime timestamp) {
+    return '${timestamp.day} ${_getMonthName(timestamp.month)} ${timestamp.year} ${timestamp.hour}:${timestamp.minute.toString().padLeft(2, '0')}';
+  }
+
+  String _getMonthName(int month) {
+    switch (month) {
+      case 1:
+        return 'January';
+      case 2:
+        return 'February';
+      case 3:
+        return 'March';
+      case 4:
+        return 'April';
+      case 5:
+        return 'May';
+      case 6:
+        return 'June';
+      case 7:
+        return 'July';
+      case 8:
+        return 'August';
+      case 9:
+        return 'September';
+      case 10:
+        return 'October';
+      case 11:
+        return 'November';
+      case 12:
+        return 'December';
+      default:
+        return '';
+    }
   }
 
   void _showAddReminderBottomSheet(BuildContext context) {
@@ -129,31 +190,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
-                          children: List.generate(9, (index) {
-                            final icons = [
-                              'assets/icons/walk.png',
-                              'assets/icons/feed.png',
-                              'assets/icons/play.png',
-                              'assets/icons/sleep.png',
-                              'assets/icons/vaccine.png',
-                              'assets/icons/vet.png',
-                              'assets/icons/timer.png',
-                              'assets/icons/access_alarm.png',
-                              'assets/icons/hourglass_empty.png',
-                            ];
-
-                            final labels = [
-                              "Walk",
-                              "Feed",
-                              "Play",
-                              "Sleep",
-                              "Vaccine",
-                              "Vet",
-                              "Timer",
-                              "Access Alarm",
-                              "Hourglass Empty",
-                            ];
-
+                          children: List.generate(icons.length, (index) {
                             return GestureDetector(
                               onTap: () {
                                 setState(() {
@@ -325,9 +362,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
                           print('Selected Time: $_selectedTime');
 
                           if (selectedCategoryIndex == -1 ||
-                              _reminderController.text.isEmpty ||
-                              _selectedDate == null ||
-                              _selectedTime == null) {
+                              _reminderController.text.isEmpty) {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -422,21 +457,34 @@ class _ReminderScreenState extends State<ReminderScreen> {
                     itemCount: reminderProvider.reminders.length,
                     itemBuilder: (context, index) {
                       final reminder = reminderProvider.reminders[index];
-                      return ListTile(
-                        leading: Icon(
-                          Icons.watch_later_outlined,
-                          color: LightColors.textColor,
-                        ),
-                        title: Text(reminder['reminderText']),
-                        subtitle:
-                            Text(reminder['timestamp'].toDate().toString()),
-                        trailing: IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () async {
-                            await reminderProvider
-                                .deleteReminder(reminder['id']);
-                          },
-                        ),
+                      final DateTime timestamp = reminder['timestamp'];
+                      final categoryIndex = reminder['categoryIndex'];
+
+                      final formattedTimestamp = formatTimestamp(timestamp);
+                      return Column(
+                        children: [
+                          ListTile(
+                          visualDensity: VisualDensity.adaptivePlatformDensity,
+
+                            tileColor: Color.fromARGB(30, 180, 180, 185),
+                            leading: Image.asset(
+                              icons[
+                                  categoryIndex], // Use icon based on category index
+                              width: 40,
+                              height: 40,
+                            ),
+                            title: Text(reminder['reminderText']),
+                            subtitle: Text(formattedTimestamp),
+                            trailing: IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () async {
+                                await reminderProvider
+                                    .deleteReminder(reminder['id']);
+                              },
+                            ),
+                          ),
+                          Divider(color: Color.fromARGB(30, 180, 180, 185),), // Add a divider after each tile
+                        ],
                       );
                     },
                   );

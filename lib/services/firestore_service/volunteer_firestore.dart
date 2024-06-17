@@ -93,22 +93,41 @@ Future<void> updateVolunteerProfileImage(
   }
 
 
-  Future<List<Map<String, dynamic>>> getAllVolunteers() async {
+  // Future<List<Map<String, dynamic>>> getAllVolunteers() async {
+  //   try {
+  //     QuerySnapshot querySnapshot = await _firestore
+  //         .collection('users')
+  //         .doc('volunteers')
+  //         .collection('volunteers')
+  //         .get();
+  //     return querySnapshot.docs
+  //         .map((doc) => doc.data() as Map<String, dynamic>)
+  //         .toList();
+  //   } catch (e) {
+  //     print("Error getting all volunteers $e");
+  //     return [];
+  //   }
+  // }
+
+
+  
+ Future<List<Map<String, dynamic>>> getAllVolunteers() async {
     try {
       QuerySnapshot querySnapshot = await _firestore
           .collection('users')
           .doc('volunteers')
           .collection('volunteers')
           .get();
-      return querySnapshot.docs
+      List<Map<String, dynamic>> volunteers = querySnapshot.docs
           .map((doc) => doc.data() as Map<String, dynamic>)
           .toList();
+      print("Fetched ${volunteers.length} volunteers");
+      return volunteers;
     } catch (e) {
       print("Error getting all volunteers $e");
       return [];
     }
   }
-
 
   Future<List<Map<String, dynamic>>> getAllVolunteersAsc() async {
     try {
@@ -116,33 +135,35 @@ Future<void> updateVolunteerProfileImage(
           .collection('users')
           .doc('volunteers')
           .collection('volunteers')
-            .orderBy('minPrice', descending: false)  // Sorting by minPrice in ascending order
+          .orderBy('minPrice', descending: false) // Sorting by minPrice in ascending order
           .get();
-      return querySnapshot.docs
+      List<Map<String, dynamic>> volunteers = querySnapshot.docs
           .map((doc) => doc.data() as Map<String, dynamic>)
           .toList();
+      print("Fetched ${volunteers.length} volunteers sorted ascending");
+      return volunteers;
     } catch (e) {
       print("Error getting all volunteers $e");
       return [];
     }
   }
 
-    Future<List<Map<String, dynamic>>> getAllVolunteersDsc() async {
+  Future<List<Map<String, dynamic>>> getAllVolunteersDsc() async {
     try {
       QuerySnapshot querySnapshot = await _firestore
           .collection('users')
           .doc('volunteers')
           .collection('volunteers')
-            .orderBy('minPrice', descending: true)  // Sorting by minPrice in ascending order
+          .orderBy('minPrice', descending: true) // Sorting by minPrice in descending order
           .get();
-      return querySnapshot.docs
+      List<Map<String, dynamic>> volunteers = querySnapshot.docs
           .map((doc) => doc.data() as Map<String, dynamic>)
           .toList();
+      print("Fetched ${volunteers.length} volunteers sorted descending");
+      return volunteers;
     } catch (e) {
       print("Error getting all volunteers $e");
       return [];
     }
   }
-
-
 }

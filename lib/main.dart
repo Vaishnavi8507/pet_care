@@ -28,6 +28,7 @@ import 'package:pet_care/provider/pet_reg_provider.dart';
 import 'package:pet_care/provider/pet_sitter_provider.dart';
 import 'package:pet_care/provider/pets_provider.dart';
 import 'package:pet_care/provider/register_provider.dart';
+import 'package:pet_care/provider/reminder_provider.dart';
 import 'package:pet_care/provider/volunteer_login_provider.dart';
 import 'package:pet_care/provider/volunteer_reg_provider.dart';
 import 'package:pet_care/shared_pref_service.dart';
@@ -66,7 +67,9 @@ void main() async {
         ChangeNotifierProvider(create: (context) => OwnerEditProfileProvider()),
         ChangeNotifierProvider(create: (context)=>VolunteerDetailsGetterProvider(),),
 
-        ChangeNotifierProvider(create: (context)=> PetSitterProvider())
+        ChangeNotifierProvider(create: (context)=> PetSitterProvider()),
+
+        ChangeNotifierProvider(create : (context) => ReminderProvider())
 
 
 

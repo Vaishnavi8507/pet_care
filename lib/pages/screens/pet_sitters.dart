@@ -33,8 +33,7 @@ class PetSitters extends StatelessWidget {
                         child: Card(
                           color: Colors.white.withOpacity(0.8),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 2, horizontal: 15),
+                            padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 15),
                             child: Row(
                               children: [
                                 Icon(Icons.sort, color: Colors.grey),
@@ -80,18 +79,17 @@ class PetSitters extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
+              key: UniqueKey(),
               title: Text('Price - Low to High'),
               onTap: () async {
-                await Provider.of<PetSitterProvider>(context, listen: false)
-                    .sortByPriceAsc();
+                await Provider.of<PetSitterProvider>(context, listen: false).sortByPriceAsc();
                 Navigator.pop(context);
               },
             ),
             ListTile(
               title: Text('Price - High to Low'),
               onTap: () async {
-                await Provider.of<PetSitterProvider>(context, listen: false)
-                    .sortByPriceDsc();
+                await Provider.of<PetSitterProvider>(context, listen: false).sortByPriceDsc();
                 Navigator.pop(context);
               },
             ),
@@ -154,54 +152,57 @@ class VolunteerCard extends StatelessWidget {
                   Row(
                     children: [
                       if (volunteer['prefersDog'] == true)
-                          Container(
-                            width: 20,
-                            height: 20,
-                            child: Image.asset('assets/icons/dog.png'),
-                          ) ,                   
-                             if (volunteer['prefersCat'] == true)
-                          Container(
-                            width: 20,
-                            height: 20,
-                            child: Image.asset('assets/icons/cat.png'),
-                          ) ,                   
-                             if (volunteer['prefersRabbit'] == true)
-                          Container(
-                            width: 20,
-                            height: 20,
-                            child: Image.asset('assets/icons/rabbit.png'),
-                          ) ,                     
-                           if (volunteer['prefersBird'] == true)
-                          Container(
-                            width: 20,
-                            height: 20,
-                            child: Image.asset('assets/icons/bird.png'),
-                          ) ,                      
-                     if (volunteer['prefersDog'] == true ||
+                        Container(
+                          width: 20,
+                          height: 20,
+                          child: Image.asset('assets/icons/dog.png'),
+                        ),
+                      if (volunteer['prefersCat'] == true)
+                        Container(
+                          width: 20,
+                          height: 20,
+                          child: Image.asset('assets/icons/cat.png'),
+                        ),
+                      if (volunteer['prefersRabbit'] == true)
+                        Container(
+                          width: 20,
+                          height: 20,
+                          child: Image.asset('assets/icons/rabbit.png'),
+                        ),
+                      if (volunteer['prefersBird'] == true)
+                        Container(
+                          width: 20,
+                          height: 20,
+                          child: Image.asset('assets/icons/bird.png'),
+                        ),
+                      if (volunteer['prefersDog'] == true ||
                           volunteer['prefersCat'] == true ||
                           volunteer['prefersRabbit'] == true ||
                           volunteer['prefersBird'] == true)
-                        Text('|', style: TextStyle(fontSize: 20, color: Colors.grey),
-                        
+                        Text(
+                          '|',
+                          style: TextStyle(fontSize: 20, color: Colors.grey),
                         ),
                       if (volunteer['providesDogWalking'] == true)
                         Container(
                           width: 20,
                           height: 20,
                           child: Image.asset('assets/icons/pet_walk.png'),
-                        ) ,         
-                                    if (volunteer['providesHomeVisits'] == true)
+                        ),
+                      if (volunteer['providesHomeVisits'] == true)
                         Container(
                           width: 20,
                           height: 20,
                           child: Image.asset('assets/icons/pet_home.png'),
-                        ) ,                         if (volunteer['providesHouseSitting'] == true)
+                        ),
+                      if (volunteer['providesHouseSitting'] == true)
                         Container(
                           width: 20,
                           height: 20,
                           child: Image.asset('assets/icons/pet_sitter.png'),
-                        ) ,                       ],
-                                          ),
+                        ),
+                    ],
+                  ),
                 ],
               ),
             ),

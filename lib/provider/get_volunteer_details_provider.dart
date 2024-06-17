@@ -147,7 +147,7 @@ class VolunteerDetailsGetterProvider extends ChangeNotifier {
         final volunteerData =
             await _fireStoreService.getVolunteerDetails(user.uid);
 
-        if (_minPrice != null && _maxPrice != null && _maxPrice! < _minPrice!) {
+        if (_minPrice != null && _maxPrice != null && _maxPrice! > _minPrice!) {
           showSnackBar(context, "Max price can't be less than min price!");
           return;
         }

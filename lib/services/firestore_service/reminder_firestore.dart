@@ -13,38 +13,73 @@ class ReminderService {
     User? user = _auth.currentUser;
 
     if (user != null) {
-      await _firestore.collection('reminders').add({
-        'userId': user.uid,
-        'reminderText': reminderText,
-        'categoryIndex': selectedCategoryIndex,
-        'timestamp': finalDateTime,
-        'createdAt': FieldValue.serverTimestamp(),
-      });
+      try {
+        await _firestore
+            .collection('reminders')
+            .doc(user.uid)
+            .collection('user_reminders')
+            .add({
+          'reminderText': reminderText,
+          'categoryIndex': selectedCategoryIndex,
+          'timestamp': finalDateTime,
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+        print('Reminder added successfully');
+      } catch (e) {
+        print('Error adding reminder: $e');
+        throw Exception('Failed to add reminder');
+      }
     }
   }
 
   Future<List<Map<String, dynamic>>> getReminders() async {
     User? user = _auth.currentUser;
-    if (user != null) {
-      QuerySnapshot snapshot = await _firestore
-          .collection('reminders')
-          .where('userId', isEqualTo: user.uid)
-          .orderBy('timestamp', descending: true)
-          .get();
+    List<Map<String, dynamic>> reminders = [];
 
-      return snapshot.docs
-          .map((doc) => {
-                'id': doc.id,
-                'reminderText': doc['reminderText'],
-                'categoryIndex': doc['categoryIndex'],
-                'timestamp': (doc['timestamp'] as Timestamp).toDate(),
-              })
-          .toList();
+    if (user != null) {
+      try {
+        QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
+            .collection('reminders')
+            .doc(user.uid)
+            .collection('user_reminders')
+            .orderBy('timestamp', descending: true)
+            .get();
+
+        reminders = snapshot.docs.map((doc) {
+          return {
+            'id': doc.id,
+            'reminderText': doc['reminderText'],
+            'categoryIndex': doc['categoryIndex'],
+            'timestamp': (doc['timestamp'] as Timestamp).toDate(),
+          };
+        }).toList();
+
+        print('Reminders fetched successfully');
+      } catch (e) {
+        print('Error getting reminders: $e');
+        throw Exception('Failed to fetch reminders');
+      }
     }
-    return [];
+    return reminders;
   }
 
   Future<void> deleteReminder(String reminderId) async {
-    await _firestore.collection('reminders').doc(reminderId).delete();
+    User? user = _auth.currentUser;
+
+    if (user != null) {
+      try {
+        await _firestore
+            .collection('reminders')
+            .doc(user.uid)
+            .collection('user_reminders')
+            .doc(reminderId)
+            .delete();
+
+        print('Reminder deleted successfully');
+      } catch (e) {
+        print('Error deleting reminder: $e');
+        throw Exception('Failed to delete reminder');
+      }
+    }
   }
 }
