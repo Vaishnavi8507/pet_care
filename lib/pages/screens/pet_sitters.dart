@@ -2,13 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:pet_care/provider/pet_sitter_provider.dart';
 import 'package:provider/provider.dart';
 
-class PetSitters extends StatelessWidget {
-  const PetSitters({super.key});
+class PetSitters extends StatefulWidget {
+  const PetSitters({Key? key}) : super(key: key);
 
   @override
+  _PetSittersState createState() => _PetSittersState();
+}
+
+class _PetSittersState extends State<PetSitters> {
+  late PetSitterProvider _provider;
+
+  @override
+  void initState() {
+    super.initState();
+    _provider = PetSitterProvider()..fetchVolunteers();
+  }
+
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => PetSitterProvider()..fetchVolunteers(),
+    return ChangeNotifierProvider.value(
+      value: _provider,
       child: Scaffold(
         appBar: AppBar(
           title: Text('Pet Sitters'),
@@ -25,32 +37,107 @@ class PetSitters extends StatelessWidget {
               children: [
                 Padding(
                   padding: EdgeInsets.all(15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      GestureDetector(
-                        onTap: () => _showSortOptions(context),
-                        child: Card(
-                          color: Colors.white.withOpacity(0.8),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 15),
-                            child: Row(
-                              children: [
-                                Icon(Icons.sort, color: Colors.grey),
-                                SizedBox(width: 5),
-                                Text(
-                                  'Sort By',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.grey,
-                                  ),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          GestureDetector(
+                            onTap: () => _showSortOptions(context),
+                            child: Card(
+                              color: Colors.white.withOpacity(0.8),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 2, horizontal: 15),
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.sort, color: Colors.grey),
+                                    SizedBox(width: 5),
+                                    Text(
+                                      'Sort By',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
                           ),
-                        ),
+                          GestureDetector(
+                            onTap: () {},
+                            child: Card(
+                              color: Colors.white.withOpacity(0.8),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 2, horizontal: 15),
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.sort, color: Colors.grey),
+                                    SizedBox(width: 5),
+                                    Text(
+                                      'Dogs',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {},
+                            child: Card(
+                              color: Colors.white.withOpacity(0.8),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 2, horizontal: 15),
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.sort, color: Colors.grey),
+                                    SizedBox(width: 5),
+                                    Text(
+                                      'Cats',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {},
+                            child: Card(
+                              color: Colors.white.withOpacity(0.8),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 2, horizontal: 15),
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.sort, color: Colors.grey),
+                                    SizedBox(width: 5),
+                                    Text(
+                                      'Birds',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
                 Expanded(
@@ -71,7 +158,7 @@ class PetSitters extends StatelessWidget {
     );
   }
 
-  void _showSortOptions(BuildContext context) {
+   void _showSortOptions(BuildContext context) {
     showModalBottomSheet(
       context: context,
       builder: (context) {
@@ -82,14 +169,14 @@ class PetSitters extends StatelessWidget {
               key: UniqueKey(),
               title: Text('Price - Low to High'),
               onTap: () async {
-                await Provider.of<PetSitterProvider>(context, listen: false).sortByPriceAsc();
+                await _provider.sortByPriceAsc();
                 Navigator.pop(context);
               },
             ),
             ListTile(
               title: Text('Price - High to Low'),
               onTap: () async {
-                await Provider.of<PetSitterProvider>(context, listen: false).sortByPriceDsc();
+                await _provider.sortByPriceDsc();
                 Navigator.pop(context);
               },
             ),
@@ -99,7 +186,6 @@ class PetSitters extends StatelessWidget {
     );
   }
 }
-
 class VolunteerCard extends StatelessWidget {
   final Map<String, dynamic> volunteer;
 
@@ -119,7 +205,8 @@ class VolunteerCard extends StatelessWidget {
               radius: 30,
               backgroundImage: volunteer['profileImageUrl'] != null
                   ? NetworkImage(volunteer['profileImageUrl'])
-                  : AssetImage('assets/default_profile.png') as ImageProvider,
+                  : AssetImage('assets/images/default_profile.png')
+                      as ImageProvider,
             ),
             SizedBox(width: 15),
             Expanded(

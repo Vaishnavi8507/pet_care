@@ -29,9 +29,9 @@ class PetSitterProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      _volunteers = await _fireStoreService.getAllVolunteersAsc();
-      _logLargeData(_volunteers);
+      _volunteers.sort((a, b) => (a['minPrice'] ?? 0).compareTo(b['minPrice'] ?? 0));
       notifyListeners();
+      _logLargeData(_volunteers);
     } catch (e) {
       print("Error sorting volunteers: $e");
     }
@@ -43,7 +43,7 @@ class PetSitterProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      _volunteers = await _fireStoreService.getAllVolunteersDsc();
+      _volunteers.sort((a, b) => (b['minPrice'] ?? 0).compareTo(a['minPrice'] ?? 0));
       notifyListeners();
       _logLargeData(_volunteers);
     } catch (e) {
@@ -63,3 +63,4 @@ class PetSitterProvider extends ChangeNotifier {
     }
   }
 }
+
