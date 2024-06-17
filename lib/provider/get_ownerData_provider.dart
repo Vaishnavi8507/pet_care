@@ -20,6 +20,8 @@ class OwnerDetailsGetterProvider extends ChangeNotifier {
   String? _profileImageUrl;
   String? _age;
   String? _occupation;
+    String? _imageUrl;
+
   bool _isDataLoaded = false;
   File? _profileImageFile;
   String? _locationCity;
@@ -31,6 +33,8 @@ class OwnerDetailsGetterProvider extends ChangeNotifier {
   String? get profileImageUrl => _profileImageUrl;
   String? get age => _age;
   String? get occupation => _occupation;
+    String? get imageUrl => _imageUrl;
+
   File? get profileImageFile => _profileImageFile;
   String? get locationCity => _locationCity;
 
@@ -44,6 +48,7 @@ class OwnerDetailsGetterProvider extends ChangeNotifier {
       try {
         Map<String, dynamic>? userDetails =
             await _fireStoreService.getUserDetails(user.uid);
+        print(userDetails);
         if (userDetails != null) {
           _name = userDetails['name'];
           _email = userDetails['email'];
@@ -92,13 +97,13 @@ class OwnerDetailsGetterProvider extends ChangeNotifier {
     if (user != null) {
       try {
         if (_profileImageFile != null) {
-          String filePath = 'profile_images/${user.uid}.jpg';
+          String filePath = 'owner/profile_images/${user.uid}.jpg';
           UploadTask uploadTask =
               _storage.ref().child(filePath).putFile(_profileImageFile!);
           TaskSnapshot taskSnapshot = await uploadTask;
-          _profileImageUrl = await taskSnapshot.ref.getDownloadURL();
+          _imageUrl = await taskSnapshot.ref.getDownloadURL();
           await _fireStoreService.updateProfileImage(
-              userId: user.uid, imageUrl: _profileImageUrl!);
+              userId: user.uid, imageUrl: _imageUrl!);
         }
 
         await _fireStoreService.saveUserDetails(
@@ -109,6 +114,8 @@ class OwnerDetailsGetterProvider extends ChangeNotifier {
             age: _age ?? '',
             occupation: _occupation ?? '',
             locationCity: _locationCity ?? '',
+            profileImageUrl: _imageUrl,
+            
             role: 'owner');
 
         showSnackBar(context, "Profile details saved successfully!");

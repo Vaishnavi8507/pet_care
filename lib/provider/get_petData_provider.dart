@@ -38,7 +38,8 @@ class PetsDetailsGetterProvider extends ChangeNotifier {
 
   Future<void> addPet(Map<String, dynamic> petData) async {
     User? user = _auth.currentUser;
-
+    print("User is $user");
+    print("Its email is ${user?.email}");
     if (user != null) {
       try {
         await _fireStoreService.addPet(user.email!, petData);

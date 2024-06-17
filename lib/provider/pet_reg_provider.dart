@@ -121,8 +121,8 @@ class PetRegistrationProvider with ChangeNotifier {
 
   Future<void> registerPet(BuildContext context) async {
     setLoading(true);
-  Provider.of<OwnerDetailsGetterProvider>(context,listen: false).loadUserProfile();
-  final ownerEmail = Provider.of<OwnerDetailsGetterProvider>(context, listen: false).email;
+ await Provider.of<OwnerDetailsGetterProvider>(context,listen: false).loadUserProfile();
+  var ownerEmail = Provider.of<OwnerDetailsGetterProvider>(context, listen: false).email;
 final selectedPetType = Provider.of<PetsProvider>(context, listen: false).selectedPetType;
 
 print('Owner Email: $ownerEmail');

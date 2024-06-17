@@ -135,7 +135,7 @@ class OwnerRegistrationProvider with ChangeNotifier {
             .loadUserProfile();
 
         // Navigate to the next screen after successful signup
-        navigateToPets(context);
+         navigateToPets(context);
 
         print('Owner signed up and details saved');
       }
@@ -155,8 +155,8 @@ class OwnerRegistrationProvider with ChangeNotifier {
     Navigator.pushNamed(context, '/ownerHomeScreen');
   }
 
-  void navigateToPets(BuildContext context) {
-    Navigator.pushReplacementNamed(context, '/pets');
+  void navigateToPets(BuildContext context)  {
+    Navigator.pushNamed(context, '/pets');
   }
 
   Future<void> checkOwnerLoginStatus() async {

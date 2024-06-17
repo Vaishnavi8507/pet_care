@@ -30,11 +30,7 @@ class OwnerEditProfilePage extends StatelessWidget {
                             CircleAvatar(
                               radius: 50,
                               backgroundImage:
-                                  ownerDetailsProvider.profileImageUrl != null
-                                      ? NetworkImage(
-                                          ownerDetailsProvider.profileImageUrl!)
-                                      : AssetImage('assets/images/default.png')
-                                          as ImageProvider<Object>,
+                                  getImageProvider(ownerDetailsProvider),
                             ),
                             Positioned(
                               bottom: 0,
@@ -42,10 +38,7 @@ class OwnerEditProfilePage extends StatelessWidget {
                               child: IconButton(
                                 icon: Icon(Icons.edit),
                                 onPressed: () =>
-                                    Provider.of<OwnerEditProfileProvider>(
-                                            context,
-                                            listen: false)
-                                        .pickProfileImage(context),
+                                    ownerDetailsProvider.pickProfileImage(context),
                               ),
                             ),
                           ],
@@ -103,9 +96,7 @@ class OwnerEditProfilePage extends StatelessWidget {
                         children: [
                           ElevatedButton(
                             onPressed: () =>
-                                Provider.of<OwnerEditProfileProvider>(context,
-                                        listen: false)
-                                    .saveProfile(context),
+                                ownerDetailsProvider.saveProfile(context),
                             child: Text('Save'),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: LightColors.primaryColor,
@@ -113,9 +104,7 @@ class OwnerEditProfilePage extends StatelessWidget {
                           ),
                           ElevatedButton(
                             onPressed: () =>
-                                Provider.of<OwnerEditProfileProvider>(context,
-                                        listen: false)
-                                    .ownerLogout(context),
+                                ownerDetailsProvider.ownerLogout(context),
                             child: Text('Logout'),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.red,
@@ -135,3 +124,20 @@ class OwnerEditProfilePage extends StatelessWidget {
     );
   }
 }
+
+  ImageProvider getImageProvider(OwnerDetailsGetterProvider ownerDetailsProvider) {
+    if (ownerDetailsProvider.profileImageUrl != null) {
+      return NetworkImage(ownerDetailsProvider.profileImageUrl!);
+    } else {
+      // Check if file image is available, if not, return default image
+      if (ownerDetailsProvider.profileImageFile != null) {
+        return FileImage(ownerDetailsProvider.profileImageFile!);
+      } else {
+        return AssetImage('assets/images/default.png');
+      }
+    }
+  }
+
+
+
+
