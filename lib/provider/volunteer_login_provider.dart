@@ -101,6 +101,10 @@ class VolunteerLoginProvider extends ChangeNotifier {
     _isVolunteerLoggedIn = _prefsService.getBool('isVolunteerLoggedIn');
     notifyListeners();
   }
+  
+    void navigateToVolunteerReg(BuildContext context) {
+    Navigator.pushNamed(context, '/volunteerReg');
+  }
 
   void navigateToVolunteerDashboard(BuildContext context) {
     Navigator.pushNamed(context, '/volunteerHomeScreen');
