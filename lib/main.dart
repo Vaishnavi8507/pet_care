@@ -95,7 +95,7 @@ class MyApp extends StatelessWidget {
         '/ownerLogin': (context) => OwnerLogin(),
         '/pets': (context) => Pets(),
         '/petRegister': (context) => PetRegistration(),
-        '/volunteerRegister': (context) => VolunteerReg(),
+        '/volunteerReg': (context) => VolunteerReg(),
         '/volunteerLogin': (context) => VolunteerLogin(),
         '/forgotPassword': (context) => ForgotPasswordScreen(),
         '/volunteerRegister2': (context) => VolunteerRegPage2(),
